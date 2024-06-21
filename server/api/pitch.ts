@@ -4,6 +4,7 @@ const config = useRuntimeConfig()
 // Initializing a client
 const notion = new Client({
     auth: 'secret_1PBR9ciZwc4smO4MpCJrmp8T0J8VOVRKqV47RbwKxyv',
+    fetch 
 })
 
 export default defineEventHandler(async (event) => {
