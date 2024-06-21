@@ -170,8 +170,10 @@ const addrSearch = () => {
                             </v-col>
                         </v-row>
                         <v-row> 
-                            <v-col class="pa-0" cols="12" sm="3">
-                                <v-text-field v-model="data.count" label="수량" variant="outlined"/>
+                            <v-col class="pa-0" cols="12" sm="8">
+                                <h5>수량(박스)</h5>
+                                <!-- <v-text-field v-model="data.count" label="수량(박스)" variant="outlined"/> -->
+                                <v-number-input variant="outlined" control-variant="split" v-model="data.count" ></v-number-input>
                             </v-col>
                         </v-row>
                         <v-row> 
