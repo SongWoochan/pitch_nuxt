@@ -5,9 +5,9 @@ export default defineNuxtConfig({
   app: {
     head: {
       title: '다정농원 대극천 복숭아',
-      link: [{ rel: 'icon', type: 'image/png', href: "https://dajung-peach.pages.dev/img/icons8-peach-32.png" }],
+      link: [{ rel: 'icon', type: 'image/png', href: "/img/icons8-peach-32.png" }],
       meta: [
-        { property:'og:image', content: '/img/pitch_1.jpg'},
+        { property:'og:image', content: 'https://dajung-peach.pages.dev/img/pitch_1.jpg'},
       ],
       script : [
         // 다음 주소 검색 API
