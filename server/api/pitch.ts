@@ -3,7 +3,7 @@ import { Client }  from '@notionhq/client'
 const config = useRuntimeConfig()
 // Initializing a client
 const notion = new Client({
-    auth: config.notionToken,
+    auth: 'secret_1PBR9ciZwc4smO4MpCJrmp8T0J8VOVRKqV47RbwKxyv',
 })
 
 export default defineEventHandler(async (event) => {
@@ -28,7 +28,7 @@ export default defineEventHandler(async (event) => {
 
         const response = await notion.pages.create({
             parent: {
-                "database_id": config.notionDatabasePitch ?? '',
+                "database_id": '5bb8e896de6a48e2b3d5542b4ee988da',
             },
             properties: {
                 "이름": { 
