@@ -16,7 +16,7 @@ export default defineEventHandler(async (event) => {
             "Content-Type": 'application/json',
             "Notion-Version": '2022-06-28'
         },
-        data: {
+        body: JSON.stringify({
             parent: {
                 "database_id": '5bb8e896de6a48e2b3d5542b4ee988da',
             },
@@ -50,7 +50,7 @@ export default defineEventHandler(async (event) => {
                     number: Number(body.count),
                 },
             },
-        }
+        })
     })
       
         // const list = await notion.databases.query({
