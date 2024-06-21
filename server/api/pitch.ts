@@ -1,5 +1,6 @@
 import { Client }  from '@notionhq/client'
 import { ErrorTypes } from 'vue-router'
+import { fetch } from 'node-fetch-native'
 
 const config = useRuntimeConfig()
 // Initializing a client
