@@ -1,8 +1,9 @@
 import { Client }  from '@notionhq/client'
 
+const config = useRuntimeConfig()
 // Initializing a client
 const notion = new Client({
-    auth: process.env.NOTION_TOKEN,
+    auth: config.notionToken,
 })
 
 export default defineEventHandler(async (event) => {
@@ -27,7 +28,7 @@ export default defineEventHandler(async (event) => {
 
         const response = await notion.pages.create({
             parent: {
-                "database_id": process.env.NOTION_DATABASE_PITCH ?? '',
+                "database_id": config.notionDatabasePitch ?? '',
             },
             properties: {
                 "이름": { 

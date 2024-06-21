@@ -3,6 +3,7 @@
 import { useFetch } from 'nuxt/app';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { VNumberInput } from 'vuetify/labs/VNumberInput'
 
 const router = useRouter()
 
@@ -46,7 +47,31 @@ const changShowForm = (isShow: boolean) => {
 
 const isLoading = ref(false)
 
+const isValid = (): boolean => {
+    if (!data.value.name) {
+        alert('받는사람의 이름을 입력해주세요.')
+        return false
+    }
+    if (!data.value.phoneNo) {
+        alert('받는사람의 전화번호를 입력해주세요.')
+        return false
+    }
+    if (!data.value.postNo) {
+        alert('주소를 입력해주세요.')
+        return false
+    }
+    return true
+}
+
 const apiCall = async () => {
+    if (!isValid()) {
+        return
+    }
+
+    if (!confirm('입력한 정보로 주문하시겠습니까?')){
+        return
+    }
+
     isLoading.value = true
 
     const { data: result } = await useFetch('/api/pitch', {
@@ -70,8 +95,8 @@ const apiCall = async () => {
 }
 
 const insertAddress = (zipCode: string, addr: string, extraAddr: string) => {
-    data.value.address = addr
-    data.value.addressDetail = extraAddr
+    data.value.address = `${addr} ${extraAddr}` 
+    // data.value.addressDetail = extraAddr
     data.value.postNo = zipCode
 }
 
@@ -125,6 +150,24 @@ const addrSearch = () => {
     }).open();
 }
 
+const copyToClipboard = () => {
+  let textToCopy = document.getElementById("myAccount")?.textContent;
+
+  console.log(textToCopy);
+  // text area method
+  let textArea = document.createElement("textarea");
+  textArea.value = textToCopy ?? '';
+  textArea.style.position = "fixed";
+  textArea.style.left = "-999999px";
+  textArea.style.top = "-999999px";
+  document.body.appendChild(textArea);
+  textArea.focus();
+  textArea.select();
+  return new Promise((res, rej) => {
+    document.execCommand("copy") ? res(true) : rej();
+    textArea.remove();
+  });
+}
 </script>
 <template>
     <v-main>
@@ -141,7 +184,7 @@ const addrSearch = () => {
           
         <v-sheet
             class="d-flex align-center justify-center flex-wrap text-center mx-auto py-15 px-4"
-            elevation="4"
+            elevation="0"
             width="100%"
             rounded
         >
@@ -161,32 +204,41 @@ const addrSearch = () => {
                     <v-container>
                         <v-row> 
                             <v-col class="pa-0" cols="12" sm="12">
-                                <v-text-field v-model="data.name" label="받는사람" clearable variant="outlined" @submit.prevent/>
+                                <v-text-field v-model="data.name" label="받는사람" variant="outlined" @submit.prevent/>
                             </v-col>
                         </v-row>
                         <v-row> 
                             <v-col class="pa-0" cols="12" sm="12">
-                                <v-text-field v-model="data.phoneNo" label="전화번호" clearable variant="outlined"/>
+                                <v-text-field v-model="data.phoneNo" label="전화번호" type="tel" variant="outlined"/>
                             </v-col>
                         </v-row>
                         <v-row> 
-                            <v-col class="pa-0" cols="12" sm="8">
-                                <v-text-field v-model="data.count" label="수량(박스)" variant="outlined"/>
-                                <!-- <h5>수량(박스)</h5>
-                                <v-number-input variant="outlined" control-variant="split" v-model="data.count" ></v-number-input> -->
+                            <v-col class="pa-0 pb-5 d-flex align-center justify-center flex-wrap text-center " cols="4" sm="4">
+                                <!-- <v-text-field v-model="data.count" label="수량(박스)" variant="outlined"/> -->
+                                <v-field-label class="">수량(박스)</v-field-label>
+                            </v-col>
+                            <v-col class="pa-0" cols="8" sm="8">
+                                <!-- <v-text-field v-model="data.count" label="수량(박스)" variant="outlined"/> -->
+                                <v-number-input variant="outlined" control-variant="split" v-model="data.count" :min="1" :max="20" ></v-number-input>
                             </v-col>
                         </v-row>
                         <v-row> 
                             <v-col class="pa-0" cols="6" sm="6">
-                                <v-text-field v-model="data.postNo" label="우편번호" clearable variant="outlined" disabled/>
+                                <v-text-field v-model="data.postNo" label="우편번호" variant="outlined" disabled/>
                             </v-col>
-                            <v-col class="pa-0" cols="3" sm="3">
-                                <v-btn color="gray" variant="text" size="x-large" border @click="addrSearch" @submit.prevent>검색</v-btn>
+                            <v-col class="pa-0 pb-5 d-flex align-center justify-end flex-wrap text-center " cols="6" sm="6">
+                                <v-btn color="gray" elevated variant="tonal" size="x-large" @click="addrSearch" @submit.prevent>
+                                    <v-icon
+                                    icon="mdi-magnify"
+                                    start
+                                    ></v-icon>
+                                    주소검색
+                                </v-btn>
                             </v-col>
                         </v-row>
                         <v-row> 
                             <v-col class="pa-0" cols="12" sm="12">
-                                <v-text-field v-model="data.address" label="주소" clearable variant="outlined" disabled/>
+                                <v-text-field v-model="data.address" label="주소" variant="outlined" disabled/>
                             </v-col>
                         </v-row>
                         <v-row> 
@@ -200,9 +252,29 @@ const addrSearch = () => {
                             </v-col>
                         </v-row>
                     </v-container>
-                    <v-btn class="mt-2" size="x-large" type="submit" block @click="apiCall">저장</v-btn>
+                    <v-btn class="mt-2" color="gray" elevated size="x-large" type="button" variant="tonal" block @click="apiCall">주문하기</v-btn>
                 </v-form>
             </template>
         </v-sheet>
+        <v-card
+            variant="outlined"
+            class="mx-auto mb-10"
+            color="surface-variant"
+            width="95%"
+            subtitle="입금계좌"
+        >   
+            <v-card-item>
+            <div>
+                <div class="text-h7 mb-1">
+                    신협은행
+                </div>
+                <div class="text-h7 mb-1">
+                    <span class="mr-4">송우찬</span>|<span class="ml-4" id="myAccount">110-241-067120</span>
+                    <v-icon class="ml-4" icon="mdi-content-copy" @click="copyToClipboard"></v-icon>
+                </div>
+                <!-- <div class="text-caption">Greyhound divisely hello coldly fonwderfully</div> -->
+            </div>
+            </v-card-item>
+        </v-card>
     </v-main>
 </template>
