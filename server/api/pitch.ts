@@ -1,12 +1,10 @@
 import { Client }  from '@notionhq/client'
 import { ErrorTypes } from 'vue-router'
-import { fetch } from 'node-fetch-native'
 
 const config = useRuntimeConfig()
 // Initializing a client
 const notion = new Client({
-    auth: 'secret_1PBR9ciZwc4smO4MpCJrmp8T0J8VOVRKqV47RbwKxyv',
-    fetch 
+    auth: 'secret_1PBR9ciZwc4smO4MpCJrmp8T0J8VOVRKqV47RbwKxyv'
 })
 
 export default defineEventHandler(async (event) => {
@@ -71,7 +69,7 @@ export default defineEventHandler(async (event) => {
         if (error instanceof Error) {
 
             console.error(error.stack?.toString)
-            return { code: 500, message: error.message + error.stack?.toString }
+            return { code: 500, message: `${error.message}` }
         }
     }
     
