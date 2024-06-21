@@ -1,4 +1,5 @@
 import { Client }  from '@notionhq/client'
+import { ErrorTypes } from 'vue-router'
 
 const config = useRuntimeConfig()
 // Initializing a client
@@ -66,8 +67,11 @@ export default defineEventHandler(async (event) => {
         return { code: 200, message: response }
 
     } catch (error) {
-        console.error(error)
-        return { code: 500, message: error.message }
+        if (error instanceof Error) {
+
+            console.error(error.stack?.toString)
+            return { code: 500, message: error.message + error.stack?.toString }
+        }
     }
     
 
