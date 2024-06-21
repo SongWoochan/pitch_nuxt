@@ -161,7 +161,7 @@ const addrSearch = () => {
                     <v-container>
                         <v-row> 
                             <v-col class="pa-0" cols="12" sm="12">
-                                <v-text-field v-model="data.name" label="성명" clearable variant="outlined" @submit.prevent/>
+                                <v-text-field v-model="data.name" label="받는사람" clearable variant="outlined" @submit.prevent/>
                             </v-col>
                         </v-row>
                         <v-row> 

@@ -65,7 +65,7 @@ export default defineEventHandler(async (event) => {
 
     } catch (error) {
         console.error(error)
-        return { code: 500, message: error }
+        return { code: 500, message: error.message }
     }
     
 
