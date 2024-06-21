@@ -9,12 +9,12 @@ export default defineEventHandler(async (event) => {
     
     try {
 
-    const repo = await $fetch('https://api.notion.com/v1/databases/', {
+    const repo = await $fetch('https://api.notion.com/v1/pages/', {
         method: 'POST',
         headers: {
-            Authorization: "Bearer 'secret_1PBR9ciZwc4smO4MpCJrmp8T0J8VOVRKqV47RbwKxyv'",
-            ContentType: 'application/json',
-            NotionVersion: '2022-06-28'
+            Authorization: "Bearer secret_1PBR9ciZwc4smO4MpCJrmp8T0J8VOVRKqV47RbwKxyv",
+            "Content-Type": 'application/json',
+            "Notion-Version": '2022-06-28'
         },
         data: {
             parent: {
