@@ -6,6 +6,10 @@ export default defineEventHandler(async (event) => {
     const body = await readBody(event)
 
     console.log('body', body)
+
+    if (!body.name || !body.phoneNo || !body.postNo) {
+        return { code: 200, message: 'empty' }
+    }
     
     try {
 
@@ -27,23 +31,23 @@ export default defineEventHandler(async (event) => {
                 },
                 "전화번호": { 
                     type: "rich_text",
-                    rich_text: [{ type: "text", text: { content: body.name } }],
+                    rich_text: [{ type: "text", text: { content: body.phoneNo } }],
                 },
                 "우편번호": { 
                     type: "rich_text",
-                    rich_text: [{ type: "text", text: { content: body.name } }],
+                    rich_text: [{ type: "text", text: { content: body.postNo } }],
                 },
                 "주소": { 
                     type: "rich_text",
-                    rich_text: [{ type: "text", text: { content: body.name } }],
+                    rich_text: [{ type: "text", text: { content: body.address } }],
                 },
                 "상세주소": { 
                     type: "rich_text",
-                    rich_text: [{ type: "text", text: { content: body.name } }],
+                    rich_text: [{ type: "text", text: { content: body.addressDetail } }],
                 },
                 "요청사항": { 
                     type: "rich_text",
-                    rich_text: [{ type: "text", text: { content: body.name } }],
+                    rich_text: [{ type: "text", text: { content: body.memo } }],
                 },
                 "수량": { 
                     type: "number",
