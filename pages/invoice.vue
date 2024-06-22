@@ -39,10 +39,6 @@ const hasMore = ref(true)
 const isLoading = ref(false)
 
 const searchList = async () => {
-    if (!password.value) {
-        password.value = prompt('비밀번호를 입력해주세요.') ?? '';
-    }
-    
     isLoading.value = true
 
     const requestBody: any = {
@@ -78,7 +74,7 @@ const searchList = async () => {
                 count: item.properties['수량(3kg)']?.number ?? '',
                 count2: item.properties['수량(2kg)']?.number ?? '',
                 state: item.properties['상태']?.select?.name ?? '',
-                regTime: item.created_time?.substring(0, 19).replace('T', ' '),
+                regTime: dateFormat(new Date(item.created_time)),
                 pageId: item.id
             })
         }
@@ -124,6 +120,10 @@ const updateState = async (pageId: string, state: string) => {
 }
 
 const login = () => {
+    if (!password.value) {
+        alert('비밀번호를 입력해주세요.')
+        return false
+    }
     searchList()
 }
 
@@ -149,6 +149,22 @@ watch(tab, () => {
     searchList()
 
 })
+
+const dateFormat = (date: Date) => {
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    const hour = date.getHours();
+    const minute = date.getMinutes();
+    const second = date.getSeconds();
+
+    const monthStr = month >= 10 ? month : '0' + month;
+    const dayStr = day >= 10 ? day : '0' + day;
+    const hourStr = hour >= 10 ? hour : '0' + hour;
+    const minuteStr = minute >= 10 ? minute : '0' + minute;
+    const secondStr = second >= 10 ? second : '0' + second;
+
+    return `${date.getFullYear()}-${monthStr}-${dayStr} ${hourStr}:${minuteStr}`
+}
 
 </script>
 
@@ -212,14 +228,6 @@ watch(tab, () => {
                                 <v-card-subtitle class="text-h6 text-left px-0"><v-icon icon="mdi-phone" class="mr-2" size="x-small" ></v-icon>{{invoice.phoneNo}}</v-card-subtitle>
                                 <v-card-actions>
                                     <div class="btn-wrap">
-                                        <!-- <v-btn 
-                                        v-if="invoice.state !== '발송완료'"
-                                        :visible="false"
-                                        class="ms-2"
-                                        size="small"
-                                        text="완료처리"
-                                        variant="outlined"
-                                        ></v-btn> -->
                                         <v-btn class="float-right" >
                                             <v-icon icon="mdi-pencil"  size="x-large"></v-icon>
                                             <v-menu
