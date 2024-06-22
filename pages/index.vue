@@ -17,6 +17,7 @@ interface Invoice {
     addressDetail: string
     memo: string
     count: number
+    count2: number
 }
 
 const data = ref<Invoice>({
@@ -26,7 +27,8 @@ const data = ref<Invoice>({
     address: '',
     addressDetail: '',
     memo: '',
-    count: 1,
+    count: 0,
+    count2: 0,
 })
 
 const resetData = () => {
@@ -36,7 +38,8 @@ const resetData = () => {
     data.value.address = ''
     data.value.addressDetail = ''
     data.value.memo = ''
-    data.value.count = 1
+    data.value.count = 0
+    data.value.count2 = 0
 }
 
 const showForm = ref(false)
@@ -212,7 +215,8 @@ const popImgSrc = computed(() => {
                     1년동안 기다려주셔서 감사합니다.<br/> 대극천 복숭아 판매 시작합니다 😀
                 </div>
                 <p class="text-body-4 mb-7">
-                    3kg 35,000원 (상자 당 택배비 포함가격) <br/>
+                    3kg 38,000원 (상자 당 택배비 포함가격) <br/>
+                    2kg 27,000원 (상자 당 택배비 포함가격) <br/>
                     아래 배송정보 입력하기를 눌러 배송지를 보내주세요~!
                 </p>
                 <div class="mb-10" style="color:gray;">
@@ -242,11 +246,21 @@ const popImgSrc = computed(() => {
                         <v-row> 
                             <v-col class="pa-0 pb-5 d-flex align-center justify-center flex-wrap text-center " cols="4" sm="4">
                                 <!-- <v-text-field v-model="data.count" label="수량(박스)" variant="outlined"/> -->
-                                <v-field-label class="">수량(박스)</v-field-label>
+                                <v-field-label class="">수량(3kg 박스)</v-field-label>
                             </v-col>
                             <v-col class="pa-0" cols="8" sm="8">
                                 <!-- <v-text-field v-model="data.count" label="수량(박스)" variant="outlined"/> -->
-                                <v-number-input variant="outlined" control-variant="split" v-model="data.count" :min="1" :max="20" ></v-number-input>
+                                <v-number-input variant="outlined" control-variant="split" v-model="data.count" :min="0" :max="20" ></v-number-input>
+                            </v-col>
+                        </v-row>
+                        <v-row> 
+                            <v-col class="pa-0 pb-5 d-flex align-center justify-center flex-wrap text-center " cols="4" sm="4">
+                                <!-- <v-text-field v-model="data.count" label="수량(박스)" variant="outlined"/> -->
+                                <v-field-label class="">수량(2kg 박스)</v-field-label>
+                            </v-col>
+                            <v-col class="pa-0" cols="8" sm="8">
+                                <!-- <v-text-field v-model="data.count" label="수량(박스)" variant="outlined"/> -->
+                                <v-number-input variant="outlined" control-variant="split" v-model="data.count2" :min="0" :max="20" ></v-number-input>
                             </v-col>
                         </v-row>
                         <v-row> 

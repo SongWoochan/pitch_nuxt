@@ -57,9 +57,13 @@ export default defineEventHandler(async (event) => {
                             type: "rich_text",
                             rich_text: [{ type: "text", text: { content: body.memo } }],
                         },
-                        "수량": { 
+                        "수량(3kg)": { 
                             type: "number",
                             number: Number(body.count),
+                        },
+                        "수량(2kg)": { 
+                            type: "number",
+                            number: Number(body.count2),
                         },
                     },
                 })
@@ -85,6 +89,20 @@ export default defineEventHandler(async (event) => {
         
         try {
 
+            const requestBody: any = {
+                "page_size": 2,
+                "sorts": [
+                    {
+                        "timestamp": "created_time",
+                        "direction": "descending"
+                    }
+                ],
+            }
+            
+            if (body.cursor) {
+                requestBody.start_cursor = body.cursor
+            }
+
             const list = await $fetch(`https://api.notion.com/v1/databases/${databaseId}/query`, {
                 method: 'POST',
                 headers: {
@@ -92,14 +110,7 @@ export default defineEventHandler(async (event) => {
                     "Content-Type": 'application/json',
                     "Notion-Version": '2022-06-28'
                 },
-                body: JSON.stringify({
-                    // "sorts": [
-                    //     {
-                    //         "property": "created_time",
-                    //         "direction": "descending"
-                    //     }
-                    // ],
-                })
+                body: JSON.stringify(requestBody)
             })
 
 
