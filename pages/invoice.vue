@@ -3,6 +3,15 @@ import { useFetch } from 'nuxt/app';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
+useHead({
+	title: '복숭아 주문 목록',
+    meta: [
+        { property:'og:image', content: 'https://dajung-peach.pages.dev/img/invoice_preview.png' },
+    	{ name: 'description', content: '복숭아 주문 목록 페이지입니다.' }
+    ],
+    script: [{ children: `console.log('hello')` }]
+})
+
 const router = useRouter()
 
 const result = ref()
