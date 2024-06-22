@@ -20,11 +20,11 @@ interface Invoice {
     regTime: string
 }
 
-const invoiceList = ref<Array<Invoice>>()
+const invoiceList = ref<Array<Invoice>>([])
 
 const password = ref('')
 const cursor = ref()
-const hasMore = ref(false)
+const hasMore = ref(true)
 
 const apiCall = async () => {
     if (!password.value) {
@@ -53,7 +53,7 @@ const apiCall = async () => {
         const resultList: Array<Invoice> = []
 
         for (const item of (list as any).results as any) {
-            resultList.push({
+            invoiceList.value?.push({
                 name: item.properties['이름']?.title[0]?.plain_text ?? '',
                 phoneNo: item.properties['전화번호']?.rich_text[0]?.plain_text ?? '',
                 postNo: item.properties['우편번호']?.rich_text[0]?.plain_text ?? '',
@@ -66,11 +66,15 @@ const apiCall = async () => {
                 regTime: item.created_time?.substring(0, 19)
             })
         }
-
-        invoiceList.value = invoiceList.value
         
         cursor.value = (result.value as any)?.list.next_cursor
-        hasMore.value = (result.value as any)?.list.hasMore
+        hasMore.value = (result.value as any)?.list.has_more
+
+        // invoiceList.value = invoiceList.value
+
+        console.log('cursor.value', cursor.value)
+        console.log('hasMore.value', hasMore.value)
+
     } else {
         alert ((result.value as any)?.message ?? 'fail...')
     }
@@ -80,6 +84,7 @@ const apiCall = async () => {
 
 <template>
     <v-container>
+        <h2 class="text-center text-h4 font-weight-black text-orange mb-10">다정농원 대극천 복숭아<br/>주문목록</h2>
         <v-list density="compact">
             <v-list-item
                 v-for="(invoice, index) in invoiceList"
@@ -93,69 +98,60 @@ const apiCall = async () => {
                     <div>
                         <div class="d-flex align-center justify-center flex-no-wrap justify-space-between">
                             <v-card-title class="text-h8">{{invoice.name}}</v-card-title>
-                            <v-card-subtitle class="text-h6 text-left px-0">{{invoice.phoneNo}}</v-card-subtitle>
+                            <v-card-subtitle class="text-h6 text-left px-0"><v-icon icon="mdi-phone" class="mr-2" size="x-small" ></v-icon>{{invoice.phoneNo}}</v-card-subtitle>
                             <v-card-actions>
-                                <v-btn
+                                <div class="btn-wrap">
+                                    <!-- <v-btn 
+                                    v-if="invoice.state !== '발송완료'"
+                                    :visible="false"
                                     class="ms-2"
                                     size="small"
                                     text="완료처리"
                                     variant="outlined"
-                                ></v-btn>
+                                    ></v-btn> -->
+                                </div>
                             </v-card-actions>
                         </div>
                     </div>
                     <div>
                         <v-container>
                             <v-row> 
-                                <v-col class="pa-0 pl-3" cols="3" sm="3">수량</v-col>
-                                <v-col class="pa-0" cols="9" sm="9">
-                                    {{ invoice.count }} 박스
-                                    <v-chip v-if="invoice.state === '발송완료'" class="mb-1" size="small" color="green" variant="flat" label>
+                                <v-col class="pa-0 pl-3 text-caption" cols="3" sm="3">수량(3kg)</v-col>
+                                <v-col class="pa-0" cols="9" sm="9">{{ invoice.count ? `${invoice.count} 박스` : '-' }}
+                                    <v-chip v-if="invoice.state === '발송완료'" class="mb-1" size="small" color="green" variant="outlined" label>
                                         발송완료
                                     </v-chip>
-                                    <v-chip v-if="invoice.state !== '발송완료'" class="mb-1" size="small" color="red" variant="outlined" label>
-                                        미발송
+                                    <v-chip v-if="invoice.state === '주문취소'" class="mb-1" size="small" color="gray" variant="outlined" label>
+                                        주문취소
+                                    </v-chip>
+                                    <v-chip v-if="invoice.state === '입금완료'" class="mb-1" size="small" color="blue" variant="outlined" label>
+                                        입금완료
+                                    </v-chip>
+                                    <v-chip v-if="invoice.state === '주문접수'" class="mb-1" size="small" color="red" variant="outlined" label>
+                                        주문접수
                                     </v-chip>
 
                                 </v-col>
                             </v-row>
                             <v-row> 
-                                <v-col class="pa-0 pl-3" cols="3" sm="3">주소</v-col>
+                                <v-col class="pa-0 pl-3 text-caption" cols="3" sm="3">수량(2kg)</v-col>
+                                <v-col class="pa-0" cols="9" sm="9">{{ invoice.count2 ? `${invoice.count2} 박스` : '-' }}</v-col>
+                            </v-row>
+                            <v-row> 
+                                <v-col class="pa-0 pl-3 text-caption" cols="3" sm="3">주소</v-col>
                                 <v-col class="pa-0" cols="9" sm="9">{{ `${invoice.postNo} ${invoice.address} ${invoice.addressDetail}` }}</v-col>
                             </v-row>
                             <v-row> 
-                                <v-col class="pa-0 pl-3" cols="3" sm="3">요청사항</v-col>
+                                <v-col class="pa-0 pl-3 text-caption" cols="3" sm="3">요청사항</v-col>
                                 <v-col class="pa-0" cols="9" sm="9">{{ invoice.memo }}</v-col>
                             </v-row>
                         </v-container>
                     </div>
-                    <!-- <v-card-item>
-                        <v-chip v-if="invoice.state === '발송완료'" color="green" variant="flat" label>
-                            발송완료
-                        </v-chip>
-                        <v-chip v-if="invoice.state !== '발송완료'" color="red" variant="outlined" label>
-                            발송대기
-                        </v-chip>
-                        <v-container>
-                            <v-row> 
-                                <v-col class="pa-0" cols="3" sm="3">수량</v-col>
-                                <v-col class="pa-0" cols="9" sm="9">{{ invoice.count }} 박스</v-col>
-                            </v-row>
-                            <v-row> 
-                                <v-col class="pa-0" cols="3" sm="3">주소</v-col>
-                                <v-col class="pa-0" cols="9" sm="9">{{ `${invoice.postNo} ${invoice.address} ${invoice.addressDetail}` }}</v-col>
-                            </v-row>
-                            <v-row> 
-                                <v-col class="pa-0" cols="3" sm="3">요청사항</v-col>
-                                <v-col class="pa-0" cols="9" sm="9">{{ invoice.memo }}</v-col>
-                            </v-row>
-                        </v-container>
-                    </v-card-item> -->
                 </v-card>
             </v-list-item>
         </v-list>
         <div class="d-flex align-center justify-center flex-no-wrap justify-space-between">
-            <v-btn @click="apiCall()">더보기</v-btn>
+            <v-btn v-if="hasMore" class="mx-auto" @click="apiCall()">더보기</v-btn>
         </div>
     </v-container>
 </template>
@@ -165,7 +161,7 @@ const apiCall = async () => {
     max-width: 700px;
     margin: 0 auto;
 }
-.dataLabel {
-    width: 100px;
+.btn-wrap {
+    width: 90px;
 }
 </style>

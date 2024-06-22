@@ -90,7 +90,7 @@ export default defineEventHandler(async (event) => {
         try {
 
             const requestBody: any = {
-                "page_size": 2,
+                "page_size": 20,
                 "sorts": [
                     {
                         "timestamp": "created_time",
