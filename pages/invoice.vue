@@ -99,7 +99,7 @@ const apiCall = async () => {
 </script>
 
 <template>
-    <v-container>
+    <v-container class="my-frame pa-0">
         <v-overlay  class="d-flex align-center justify-center flex-wrap text-center" v-model="isLoading">
             <v-progress-circular indeterminate></v-progress-circular>
         </v-overlay>   
