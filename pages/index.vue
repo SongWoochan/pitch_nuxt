@@ -325,11 +325,12 @@ const popImgSrc = computed(() => {
         <v-carousel 
             cycle
             color="grey-darken-4"
+            hide-delimiters
             :hide-delimiter-background="true"
             :interval="5000"
         >
             <v-carousel-item
-                v-for="n in 7"
+                v-for="n in 8"
                 :key="n"
                 :src="`/img/peach/${n-1}.jpg`"
                 :aspect-ratio="1.2"
