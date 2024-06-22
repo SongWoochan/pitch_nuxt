@@ -1,9 +1,18 @@
 <script setup lang="ts">
-
 import { useFetch } from 'nuxt/app';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { VNumberInput } from 'vuetify/labs/VNumberInput'
+
+useHead({
+	title: '다정농원 대극천 복숭아',
+    meta: [
+        { property:'og:image', content: 'https://dajung-peach.pages.dev/img/pitch_1.jpg' },
+    	{ name: 'description', content: '1년동안 기다려주셔서 감사합니다. 대극천 복숭아 판매 시작합니다 😀' }
+    ],
+    script: [{ children: `console.log('hello')` }]
+})
+
 
 const router = useRouter()
 
@@ -210,8 +219,8 @@ const popImgSrc = computed(() => {
             rounded
         >
             <div class="mb-3">
-                <h2 class="text-h4 font-weight-black text-orange mb-10">다정농원 대극천 복숭아</h2>
-                <div class="text-h5 font-weight-medium mb-5">
+                <h2 class="text-h4 font-weight-black text-orange mb-10 word-keep">다정농원 대극천 복숭아</h2>
+                <div class="text-h5 font-weight-medium mb-5 word-keep">
                     1년동안 기다려주셔서 감사합니다.<br/> 대극천 복숭아 판매 시작합니다 😀
                 </div>
                 <p class="text-body-4 mb-7">
@@ -219,7 +228,7 @@ const popImgSrc = computed(() => {
                     2kg 27,000원 (상자 당 택배비 포함가격) <br/>
                     아래 배송정보 입력하기를 눌러 배송지를 보내주세요~!
                 </p>
-                <div class="mb-10" style="color:gray;">
+                <div class="mb-10 word-keep" style="color:gray;">
                     <p>1. 배송은 입금순으로 순차적으로 발송됩니다.</p>
                     <p>2. 당일수확 당일배송을 원칙으로 합니다.</p>
                     <p>3. 금요일은 택배발송을 하지않습니다.<br/> ( 유통과정에서 후숙되어 상할 수 있기때문)</p>
@@ -390,5 +399,9 @@ const popImgSrc = computed(() => {
 .my-frame {
     max-width: 700px;
     margin: 0 auto;
+}
+
+.word-keep {
+    word-break: keep-all;
 }
 </style>

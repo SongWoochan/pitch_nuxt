@@ -6,9 +6,6 @@ export default defineNuxtConfig({
     head: {
       title: '다정농원 대극천 복숭아',
       link: [{ rel: 'icon', type: 'image/png', href: "/img/icons8-peach-32.png" }],
-      meta: [
-        { property:'og:image', content: 'https://dajung-peach.pages.dev/img/pitch_1.jpg'},
-      ],
       script : [
         // 다음 주소 검색 API
         { src: '//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js' },
