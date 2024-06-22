@@ -160,10 +160,8 @@ watch(tab, () => {
         </v-overlay>   
         <h2 class="text-center text-h4 font-weight-black text-orange my-6">다정농원 대극천 복숭아<br/>주문목록</h2>
         <v-sheet v-if="!isAuth" rounded="lg">
-            
             <v-card
             class="mx-auto pa-12 pb-8"
-            elevation="2"
             max-width="400"
             rounded="lg"
             >
@@ -235,7 +233,7 @@ watch(tab, () => {
                                                 rounded="lg"
                                                 slim
                                             >
-                                                <v-list-item ><v-btn color="green" variant="outlined" @click="updateState(invoice.pageId, '주문완료')">주문완료</v-btn></v-list-item>
+                                                <v-list-item ><v-btn color="green" variant="outlined" @click="updateState(invoice.pageId, '발송완료')">발송완료</v-btn></v-list-item>
                                                 <v-list-item ><v-btn color="blue"  variant="outlined" @click="updateState(invoice.pageId, '입금완료')">입금완료</v-btn></v-list-item>
                                                 <v-list-item ><v-btn color="red"   variant="outlined" @click="updateState(invoice.pageId, '주문접수')">주문접수</v-btn></v-list-item>
                                                 <v-list-item ><v-btn color="gray"  variant="outlined" @click="updateState(invoice.pageId, '주문취소')">주문취소</v-btn></v-list-item>
