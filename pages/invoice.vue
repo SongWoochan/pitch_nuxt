@@ -15,137 +15,101 @@ interface Invoice {
     addressDetail: string
     memo: string
     count: number
+    state: string
+    regTime: string
 }
 
-const data = ref<Invoice>({
-    name: '',
-    phoneNo: '',
-    postNo: '',
-    address: '',
-    addressDetail: '',
-    memo: '',
-    count: 0,
-})
+const invoiceList = ref<Array<Invoice>>()
+
+const password = ref('')
 
 const apiCall = async () => {
+    if (!password.value) {
+        password.value = prompt('비밀번호를 입력해주세요.');
+    }
+
+
     const { data: result } = await useFetch('/api/pitch', {
         method: 'POST',
-        body: data.value
+        body: {
+            type: 'LIST',
+            password: password.value
+        }
     })
 
-    console.log('date', result.value?.code)
-    console.log('date', result.value?.message)
+    if ((result.value as any)?.code === 200) {
 
-    if (result.value?.code === 200) {
-        alert('success!')
-        // router.push('/')
+        const list = (result.value as any)?.list
+        
+        const resultList = []
+
+        for (const item of (list as any).results as any) {
+            resultList.push({
+                name: item.properties['이름']?.title[0]?.plain_text ?? '',
+                phoneNo: item.properties['전화번호']?.rich_text[0]?.plain_text ?? '',
+                postNo: item.properties['우편번호']?.rich_text[0]?.plain_text ?? '',
+                address: item.properties['주소']?.rich_text[0]?.plain_text ?? '',
+                addressDetail: item.properties['상세주소']?.rich_text[0]?.plain_text ?? '',
+                memo: item.properties['요청사항']?.rich_text[0]?.plain_text ?? '',
+                count: item.properties['수량']?.number ?? '',
+                state: item.properties['상태']?.select?.name ?? '',
+                regTime: item.created_time?.substring(0, 19)
+            })
+        }
+
+
+        invoiceList.value = resultList
     } else {
-        alert ('fail...')
+        alert ((result.value as any)?.message ?? 'fail...')
     }
 }
 
-const insertAddress = (zipCode: string, addr: string, extraAddr: string) => {
-    data.value.address = addr
-    data.value.addressDetail = extraAddr
-    data.value.postNo = zipCode
-}
-
-const addrSearch = () => {
-        new daum.Postcode({
-          oncomplete: function(data: any) {
-            // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
-  
-            // 각 주소의 노출 규칙에 따라 주소를 조합한다.
-            // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
-            let addr = ''; // 주소 변수
-            let extraAddr = ''; // 참고항목 변수
-  
-            //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
-            if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
-              addr = data.roadAddress;
-            } else { // 사용자가 지번 주소를 선택했을 경우(J)
-              addr = data.jibunAddress;
-            }
-  
-            // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
-            if(data.userSelectedType === 'R'){
-              // 법정동명이 있을 경우 추가한다. (법정리는 제외)
-              // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
-              if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
-                extraAddr += data.bname;
-              }
-              // 건물명이 있고, 공동주택일 경우 추가한다.
-              if(data.buildingName !== '' && data.apartment === 'Y'){
-                extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
-              }
-              // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
-              if(extraAddr !== ''){
-                extraAddr = ' (' + extraAddr + ')';
-              }
-              // 조합된 참고항목을 해당 필드에 넣는다.
-            //   document.getElementById("sample6_extraAddress").value = extraAddr;
-  
-            } else {
-            //   document.getElementById("sample6_extraAddress").value = '';
-            }
-  
-            // 우편번호와 주소 정보를 해당 필드에 넣는다.
-            // document.getElementById('sample6_postcode').value = data.zonecode;
-            // document.getElementById("sample6_address").value = addr;
-            // 커서를 상세주소 필드로 이동한다.
-            // document.getElementById("sample6_detailAddress").focus();
-
-            insertAddress(data.zonecode, addr, extraAddr)
-          }
-        }).open();
-      }
 </script>
 
 <template>
-    <div>
-        <table>
-            <tr>
-                <td>성명</td>
-                <td><input type="text" v-model="data.name"></td>
-            </tr>
-            <tr>
-                <td>전화번호</td>
-                <td><input type="text" v-model="data.phoneNo"></td>
-            </tr>
-            <tr>
-                <td>수량</td>
-                <td>
-                    <v-text-field v-model="data.count" ></v-text-field>
-                </td>
-            </tr>
-            <tr>
-                <td>주소 검색</td>
-                <td><v-btn label="주소 검색" icon="pi pi-check" /></td>
-            </tr>
-            <tr>
-                <td>우편번호</td>
-                <td><input type="text" disabled v-model="data.postNo"></td>
-            </tr>
-            <tr>
-                <td>주소</td>
-                <td><input type="text" disabled v-model="data.address"></td>
-            </tr>
-            <tr>
-                <td>상세주소</td>
-                <td><input type="text" v-model="data.addressDetail"></td>
-            </tr>
-            <tr>
-                <td>요청사항</td>
-                <td><v-textarea label="Label">{{ data.memo }}</v-textarea></td>
-            </tr>
-        </table>
-    </div>
-    <div>
-        <button @click="apiCall">
-            주소보내기
-        </button>
-        <NuxtLink to="/">
-            돌아가기
-        </NuxtLink>
-    </div>
+    <v-container>
+        <v-btn @click="apiCall">불러오기</v-btn>
+        <v-list>
+            <v-list-item
+                v-for="(invoice, index) in invoiceList"
+            >
+                <v-card
+                    variant="outlined"
+                    class="mx-auto mb-10"
+                    color="surface-variant"
+                    width="95%"
+                    :subtitle="invoice.phoneNo"
+                    :title="invoice.name"
+                >   
+                    <v-card-item>
+                        <v-chip v-if="invoice.state === '발송완료'" color="green" variant="flat" label>
+                            발송완료
+                        </v-chip>
+                        <v-chip v-if="invoice.state !== '발송완료'" color="red" variant="outlined" label>
+                            발송대기
+                        </v-chip>
+                        <div class="text-h7 mb-1">
+                            <span>주소 :</span>
+                            <span>{{ `${invoice.postNo} | ${invoice.address} ${invoice.addressDetail}` }}</span>
+                        </div>
+                        <div class="text-h7 mb-1">
+                            <span>수량 :</span>
+                            <span>{{ invoice.count }} 박스</span>
+                        </div>
+                        <div class="text-h7 mb-1">
+                            <span>요청사항 (우체국 택배 기입용) :</span>
+                            <span>{{ invoice.memo }} 박스</span>
+                        </div>
+                    </v-card-item>
+                </v-card>
+            </v-list-item>
+        </v-list>
+    </v-container>
 </template>
+
+<style scoped>
+.my-frame {
+    max-width: 700px;
+    margin: 0 auto;
+}
+</style>

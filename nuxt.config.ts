@@ -36,6 +36,7 @@ export default defineNuxtConfig({
     },
   },
   runtimeConfig: {
+    notionPassword: '85437',
     notionToken: 'secret_1PBR9ciZwc4smO4MpCJrmp8T0J8VOVRKqV47RbwKxyv',
     notionDatabasePitch: '5bb8e896de6a48e2b3d5542b4ee988da',
   }

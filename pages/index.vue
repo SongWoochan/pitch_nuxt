@@ -76,7 +76,7 @@ const apiCall = async () => {
 
     const { data: result } = await useFetch('/api/pitch', {
         method: 'POST',
-        body: data.value
+        body: { ...(data.value), type: 'ADD' }
     })
 
     console.log('result.value?.code', result.value?.code)
@@ -188,7 +188,7 @@ const popImgSrc = computed(() => {
 
 </script>
 <template>
-    <v-main>
+    <v-container class="my-frame">
         <v-overlay  class="d-flex align-center justify-center flex-wrap text-center" v-model="isLoading">
             <v-progress-circular indeterminate></v-progress-circular>
         </v-overlay>   
@@ -367,5 +367,13 @@ const popImgSrc = computed(() => {
                 </v-img>
             </v-overlay>   
         </v-container> -->
-    </v-main>
+    </v-container>
 </template>
+
+
+<style scoped>
+.my-frame {
+    max-width: 700px;
+    margin: 0 auto;
+}
+</style>
