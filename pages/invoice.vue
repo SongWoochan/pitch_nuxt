@@ -35,10 +35,14 @@ const password = ref('')
 const cursor = ref()
 const hasMore = ref(true)
 
+const isLoading = ref(false)
+
 const apiCall = async () => {
     if (!password.value) {
         password.value = prompt('비밀번호를 입력해주세요.') ?? '';
     }
+    
+    isLoading.value = true
 
     const requestBody: any = {
         type: 'LIST',
@@ -72,7 +76,7 @@ const apiCall = async () => {
                 count: item.properties['수량(3kg)']?.number ?? '',
                 count2: item.properties['수량(2kg)']?.number ?? '',
                 state: item.properties['상태']?.select?.name ?? '',
-                regTime: item.created_time?.substring(0, 19)
+                regTime: item.created_time?.substring(0, 19).replace('T', ' ')
             })
         }
         
@@ -86,13 +90,19 @@ const apiCall = async () => {
 
     } else {
         alert ((result.value as any)?.message ?? 'fail...')
+        password.value = ''
     }
+    
+    isLoading.value = false
 }
 
 </script>
 
 <template>
     <v-container>
+        <v-overlay  class="d-flex align-center justify-center flex-wrap text-center" v-model="isLoading">
+            <v-progress-circular indeterminate></v-progress-circular>
+        </v-overlay>   
         <h2 class="text-center text-h4 font-weight-black text-orange mb-10">다정농원 대극천 복숭아<br/>주문목록</h2>
         <v-list density="compact">
             <v-list-item
@@ -124,22 +134,26 @@ const apiCall = async () => {
                     <div>
                         <v-container>
                             <v-row> 
-                                <v-col class="pa-0 pl-3 text-caption" cols="3" sm="3">수량(3kg)</v-col>
-                                <v-col class="pa-0" cols="9" sm="9">{{ invoice.count ? `${invoice.count} 박스` : '-' }}
-                                    <v-chip v-if="invoice.state === '발송완료'" class="mb-1" size="small" color="green" variant="outlined" label>
+                                <v-col class="pa-0 pl-3 text-caption" cols="3" sm="3">주문일시</v-col>
+                                <v-col class="pa-0" cols="9" sm="9">{{ invoice.regTime }}
+                                    <v-chip v-if="invoice.state === '발송완료'" class="ml-2 mb-1" size="small" color="green" variant="outlined" label>
                                         발송완료
                                     </v-chip>
-                                    <v-chip v-if="invoice.state === '주문취소'" class="mb-1" size="small" color="gray" variant="outlined" label>
+                                    <v-chip v-if="invoice.state === '주문취소'" class="ml-2 mb-1" size="small" color="gray" variant="outlined" label>
                                         주문취소
                                     </v-chip>
-                                    <v-chip v-if="invoice.state === '입금완료'" class="mb-1" size="small" color="blue" variant="outlined" label>
+                                    <v-chip v-if="invoice.state === '입금완료'" class="ml-2 mb-1" size="small" color="blue" variant="outlined" label>
                                         입금완료
                                     </v-chip>
-                                    <v-chip v-if="invoice.state === '주문접수'" class="mb-1" size="small" color="red" variant="outlined" label>
+                                    <v-chip v-if="invoice.state === '주문접수'" class="ml-2 mb-1" size="small" color="red" variant="outlined" label>
                                         주문접수
                                     </v-chip>
 
                                 </v-col>
+                            </v-row>
+                            <v-row> 
+                                <v-col class="pa-0 pl-3 text-caption" cols="3" sm="3">수량(3kg)</v-col>
+                                <v-col class="pa-0" cols="9" sm="9">{{ invoice.count ? `${invoice.count} 박스` : '-' }}</v-col>
                             </v-row>
                             <v-row> 
                                 <v-col class="pa-0 pl-3 text-caption" cols="3" sm="3">수량(2kg)</v-col>
