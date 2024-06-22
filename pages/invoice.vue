@@ -93,7 +93,6 @@ const apiCall = async () => {
                     variant="outlined"
                     class="mx-auto mb-3"
                     color="surface-variant"
-                    width="95%"
                 >   
                     <div>
                         <div class="d-flex align-center justify-center flex-no-wrap justify-space-between">
