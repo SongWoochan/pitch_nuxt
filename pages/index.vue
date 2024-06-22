@@ -9,8 +9,7 @@ useHead({
     meta: [
         { property:'og:image', content: 'https://dajung-peach.pages.dev/img/pitch_1.jpg' },
     	{ name: 'description', content: '1년동안 기다려주셔서 감사합니다. 대극천 복숭아 판매 시작합니다 😀' }
-    ],
-    script: [{ children: `console.log('hello')` }]
+    ]
 })
 
 
@@ -170,7 +169,6 @@ const addrSearch = () => {
 const copyToClipboard = () => {
   let textToCopy = document.getElementById("myAccount")?.textContent;
 
-  console.log(textToCopy);
   // text area method
   let textArea = document.createElement("textarea");
   textArea.value = textToCopy ?? '';
@@ -198,6 +196,11 @@ const popImgSrc = computed(() => {
     return `/img/peach/${popImgNo.value ?? 0}.jpg`
 })
 
+const totalPrice = computed(() => {
+    const price = data.value.count * 39000 + data.value.count2 * 27000
+    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+})
+
 </script>
 <template>
     <v-container class="my-frame pa-0">
@@ -221,20 +224,20 @@ const popImgSrc = computed(() => {
             <div class="mb-3">
                 <h2 class="text-h4 font-weight-black text-orange mb-10 word-keep">다정농원 대극천 복숭아</h2>
                 <div class="text-h5 font-weight-medium mb-5 word-keep">
-                    1년동안 기다려주셔서 감사합니다.<br/> 대극천 복숭아 판매 시작합니다 😀
+                    1년동안 기다려주셔서 감사합니다.<br/> 대극천 복숭아 판매 시작합니다. 😀
                 </div>
                 <p class="text-body-4 mb-7">
                     3kg 39,000원 (상자 당 택배비 포함가격) <br/>
                     2kg 27,000원 (상자 당 택배비 포함가격) <br/>
-                    아래 배송정보 입력하기를 눌러 배송지를 보내주세요~!
+                    아래 '배송정보 입력하기'를 눌러 배송지를 보내주세요~!
                 </p>
                 <div class="mb-10 word-keep" style="color:gray;">
-                    <p>1. 배송은 입금순으로 순차적으로 발송됩니다.</p>
-                    <p>2. 당일수확 당일배송을 원칙으로 합니다.</p>
-                    <p>3. 금요일은 택배발송을 하지않습니다.<br/> ( 유통과정에서 후숙되어 상할 수 있기때문)</p>
-                    <p>4. 금,토,일 주문건은 월요일에 순차적으로 발송됩니다.</p>
-                    <p>5. 발송전 주문취소건 및 기타 문의사항은<br/> 
-                        <a href="https://open.kakao.com/me/dajung_peach" target="_blank">카카오톡 문의</a>로 연락바랍니다.</p>
+                    <p>1. 배송은 입금 순으로 순차적으로 발송됩니다.</p>
+                    <p>2. 당일수확, 당일배송을 원칙으로 합니다.</p>
+                    <p>3. 금요일은 택배발송을 하지않습니다.<br/> ( 유통 과정에서 후숙되어 상할 수 있기 때문)</p>
+                    <p>4. 금,토,일 주문 건은 월요일에 순차적으로 발송됩니다.</p>
+                    <p>5. 발송 전 주문취소 건 및 기타 문의 사항은<br/> 
+                        <a href="https://open.kakao.com/me/dajung_peach" target="_blank">카카오톡 문의</a> 로 연락바랍니다.</p>
                 </div>
                 <v-btn v-if="!showForm" color="orange" variant="text"  size="x-large" border @click="changShowForm(true)">배송지 정보 입력하기</v-btn>
             </div>
@@ -244,40 +247,41 @@ const popImgSrc = computed(() => {
                     <v-container>
                         <v-row> 
                             <v-col class="pa-0" cols="12" sm="12">
-                                <v-text-field v-model="data.name" label="성함" variant="outlined" @submit.prevent/>
+                                <v-text-field v-model="data.name" label="성함" variant="outlined"  density="comfortable" @submit.prevent/>
                             </v-col>
                         </v-row>
                         <v-row> 
                             <v-col class="pa-0" cols="12" sm="12">
-                                <v-text-field v-model="data.phoneNo" label="전화번호" type="tel" variant="outlined"/>
+                                <v-text-field v-model="data.phoneNo" label="전화번호" type="tel" variant="outlined" density="comfortable"/>
                             </v-col>
                         </v-row>
                         <v-row> 
                             <v-col class="pa-0 pb-5 d-flex align-center justify-center flex-wrap text-center " cols="4" sm="4">
-                                <!-- <v-text-field v-model="data.count" label="수량(박스)" variant="outlined"/> -->
                                 <v-field-label class="">수량(3kg 박스)</v-field-label>
                             </v-col>
                             <v-col class="pa-0" cols="8" sm="8">
-                                <!-- <v-text-field v-model="data.count" label="수량(박스)" variant="outlined"/> -->
-                                <v-number-input variant="outlined" control-variant="split" v-model="data.count" :min="0" :max="20" ></v-number-input>
+                                <v-number-input variant="outlined" control-variant="split" v-model="data.count" :min="0" :max="20" density="comfortable" ></v-number-input>
                             </v-col>
                         </v-row>
                         <v-row> 
                             <v-col class="pa-0 pb-5 d-flex align-center justify-center flex-wrap text-center " cols="4" sm="4">
-                                <!-- <v-text-field v-model="data.count" label="수량(박스)" variant="outlined"/> -->
                                 <v-field-label class="">수량(2kg 박스)</v-field-label>
                             </v-col>
                             <v-col class="pa-0" cols="8" sm="8">
-                                <!-- <v-text-field v-model="data.count" label="수량(박스)" variant="outlined"/> -->
-                                <v-number-input variant="outlined" control-variant="split" v-model="data.count2" :min="0" :max="20" ></v-number-input>
+                                <v-number-input variant="outlined" control-variant="split" v-model="data.count2" :min="0" :max="20" density="comfortable" ></v-number-input>
+                            </v-col>
+                        </v-row>
+                        <v-row> 
+                            <v-col class="pa-0 pt-5 pb-5 d-flex align-end justify-end flex-wrap text-right " cols="12" sm="12">
+                                <v-field-label class="">총 {{ totalPrice }} 원</v-field-label>
                             </v-col>
                         </v-row>
                         <v-row> 
                             <v-col class="pa-0" cols="6" sm="6">
-                                <v-text-field v-model="data.postNo" label="우편번호" variant="outlined" disabled/>
+                                <v-text-field v-model="data.postNo" label="우편번호" variant="outlined" density="comfortable" disabled/>
                             </v-col>
                             <v-col class="pa-0 pb-5 d-flex align-center justify-end flex-wrap text-center " cols="6" sm="6">
-                                <v-btn color="gray" elevated variant="tonal" size="x-large" @click="addrSearch" @submit.prevent>
+                                <v-btn color="gray" elevated variant="tonal" size="large" @click="addrSearch" @submit.prevent>
                                     <v-icon
                                     icon="mdi-magnify"
                                     start
@@ -288,24 +292,23 @@ const popImgSrc = computed(() => {
                         </v-row>
                         <v-row> 
                             <v-col class="pa-0" cols="12" sm="12">
-                                <v-text-field v-model="data.address" label="주소" variant="outlined" disabled/>
+                                <v-text-field v-model="data.address" label="주소" variant="outlined" density="comfortable" disabled/>
                             </v-col>
                         </v-row>
                         <v-row> 
                             <v-col class="pa-0" cols="12" sm="12">
-                                <v-text-field v-model="data.addressDetail" label="상세주소" clearable variant="outlined"/>
+                                <v-text-field v-model="data.addressDetail" label="상세주소" clearable variant="outlined" density="comfortable"/>
                             </v-col>
                         </v-row>
                         <v-row> 
                             <v-col class="pa-0" cols="12" sm="12">
                                 <v-textarea label="배송 요청사항 (우체국 택배 기입용)" variant="outlined" 
-                                    placeholder="ex) 문 앞에 놔주세요."
+                                    placeholder="ex) 문 앞에 놔주세요." density="comfortable"
                                 >{{ data.memo }}</v-textarea>
                             </v-col>
                         </v-row>
                     </v-container>
                     <v-btn class="mt-2" color="primary" elevated size="x-large" type="button" variant="tonal" block @click="apiCall">주문하기</v-btn>
-                    <!-- <v-btn class="mt-2" color="gray" elevated size="x-large" type="button" variant="tonal" block @click="cancel">취소</v-btn> -->
                 </v-form>
                 <v-divider></v-divider>
             </template>
@@ -326,7 +329,6 @@ const popImgSrc = computed(() => {
                     <span class="mr-4">노영식</span>|<span class="ml-4" id="myAccount">601052-52-128758</span>
                     <v-icon class="ml-4" icon="mdi-content-copy" @click="copyToClipboard"></v-icon>
                 </div>
-                <!-- <div class="text-caption">Greyhound divisely hello coldly fonwderfully</div> -->
             </div>
             </v-card-item>
         </v-card>
@@ -346,51 +348,6 @@ const popImgSrc = computed(() => {
                 color="grey-darken-3"
             ></v-carousel-item>
         </v-carousel>
-        <!-- <v-container>
-            <v-row>
-                <v-col
-                v-for="n in 7"
-                :key="n"
-                class="d-flex child-flex pa-1"
-                cols="4"
-                >
-                <v-img
-                    :src="`/img/peach/${n-1}.jpg`"
-                    aspect-ratio="1"
-                    class="bg-grey-lighten-2"
-                    cover
-                    @click="openImage(n-1)"
-                >
-                    <template v-slot:placeholder>
-                    <v-row
-                        align="center"
-                        class="fill-height ma-0"
-                        justify="center"
-                    >
-                        <v-progress-circular
-                        color="grey-lighten-5"
-                        indeterminate
-                        ></v-progress-circular>
-                    </v-row>
-                    </template>
-                </v-img>
-                </v-col>
-            </v-row>
-            <v-overlay 
-                class="align-center justify-center"
-                contained
-                v-model="showPopImg"
-                :close-on-content-click="true"
-                :close-on-back="true"
-                :persistent="true"
-                @close="showPopImg = false"
-            >
-                <v-img
-                    :src="popImgSrc"
-                >
-                </v-img>
-            </v-overlay>   
-        </v-container> -->
     </v-container>
 </template>
 
