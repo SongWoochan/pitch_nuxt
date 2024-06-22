@@ -103,6 +103,17 @@ export default defineEventHandler(async (event) => {
                 requestBody.start_cursor = body.cursor
             }
 
+            if (body.state) {
+                requestBody.filter = {
+                    "and": [
+                        {
+                            "property": "상태",
+                            "select": { "equals": body.state }
+                        }
+                    ]
+                }
+            }
+
             const list = await $fetch(`https://api.notion.com/v1/databases/${databaseId}/query`, {
                 method: 'POST',
                 headers: {
@@ -116,6 +127,40 @@ export default defineEventHandler(async (event) => {
 
             
             return { code: 200, message: 'success', list: list }
+
+        } catch (error) {
+            console.error(error)
+            if (error instanceof Error) {
+
+                return { code: 500, message: `${error.message}` }
+            }
+        }
+    } else if (body.type === 'UPDATE') {
+        // 상태 수정하기
+        
+        try {
+
+            const result = await $fetch(`https://api.notion.com/v1/pages/${body.pageId}`, {
+                method: 'PATCH',
+                headers: {
+                    Authorization: `Bearer ${secretKey}`,
+                    "Content-Type": 'application/json',
+                    "Notion-Version": '2022-06-28'
+                },
+                body: JSON.stringify({
+                    "properties": {
+                        "상태": {
+                          "select": {
+                            "name": body.state,
+                          }
+                        },
+                    }
+                })
+            })
+
+
+            
+            return { code: 200, message: 'success', result: result }
 
         } catch (error) {
             console.error(error)
