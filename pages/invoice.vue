@@ -166,6 +166,10 @@ const dateFormat = (date: Date) => {
     return `${date.getFullYear()}-${monthStr}-${dayStr} ${hourStr}:${minuteStr}`
 }
 
+const totalPrice = (count: number, count2: number) => {
+    const price = count * 39000 + count2 * 27000
+    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
 </script>
 
 <template>
@@ -277,7 +281,10 @@ const dateFormat = (date: Date) => {
                                 </v-row>
                                 <v-row> 
                                     <v-col class="pa-0 pl-3 text-caption" cols="3" sm="3">수량(2kg)</v-col>
-                                    <v-col class="pa-0" cols="9" sm="9">{{ invoice.count2 ? `${invoice.count2} 박스` : '-' }}</v-col>
+                                    <v-col class="pa-0" cols="4" sm="4">{{ invoice.count2 ? `${invoice.count2} 박스` : '-' }}</v-col>
+                                    <v-col class="pa-0 pt-5 pb-5 d-flex align-end justify-end flex-wrap text-right " cols="5" sm="5">
+                                        <v-field-label class="">총 {{ totalPrice(invoice.count, invoice.count2) }} 원</v-field-label>
+                                    </v-col>
                                 </v-row>
                                 <v-row> 
                                     <v-col class="pa-0 pl-3 text-caption" cols="3" sm="3">주소</v-col>
