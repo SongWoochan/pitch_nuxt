@@ -65,6 +65,10 @@ export default defineEventHandler(async (event) => {
                             type: "number",
                             number: Number(body.count2),
                         },
+                        "상태": { 
+                            type: "select",
+                            select: { name: '주문접수'},
+                        },
                     },
                 })
             })
