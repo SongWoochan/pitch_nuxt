@@ -210,8 +210,8 @@ const totalPrice = computed(() => {
         <v-img
             :aspect-ratio="1"
             class="bg-white"
-            src="/img/peach_2.jpg"
-            max-height="250"
+            src="/img/peach_3.jpg"
+            max-height="300"
             cover
           ></v-img>
           
