@@ -237,7 +237,10 @@ const totalPrice = computed(() => {
                     <p>3. 금요일은 택배발송을 하지않습니다.<br/> ( 유통 과정에서 후숙되어 상할 수 있기 때문)</p>
                     <p>4. 금,토,일 주문 건은 월요일에 순차적으로 발송됩니다.</p>
                     <p>5. 발송 전 주문취소 건 및 기타 문의 사항은<br/> 
-                        <a href="https://open.kakao.com/me/dajung_peach" target="_blank">카카오톡 문의</a> 로 연락바랍니다.</p>
+                        <v-btn variant="outlined" append-icon="mdi-gesture-tap">
+                            <a href="https://open.kakao.com/me/dajung_peach" target="_blank">카카오톡 문의</a>
+                            <!-- <v-icon icon="mdi-gesture-tap" size="large"></v-icon> -->
+                        </v-btn> 로 연락바랍니다.</p>
                 </div>
                 <v-btn v-if="!showForm" color="orange" variant="text"  size="x-large" border @click="changShowForm(true)">배송정보 입력하기</v-btn>
             </div>
