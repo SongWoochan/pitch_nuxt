@@ -210,7 +210,7 @@ const totalPrice = computed(() => {
         <v-img
             :aspect-ratio="1"
             class="bg-white"
-            src="/img/pitch_1.jpg"
+            src="/img/peach_2.jpg"
             max-height="250"
             cover
           ></v-img>
@@ -239,7 +239,7 @@ const totalPrice = computed(() => {
                     <p>5. 발송 전 주문취소 건 및 기타 문의 사항은<br/> 
                         <a href="https://open.kakao.com/me/dajung_peach" target="_blank">카카오톡 문의</a> 로 연락바랍니다.</p>
                 </div>
-                <v-btn v-if="!showForm" color="orange" variant="text"  size="x-large" border @click="changShowForm(true)">배송지 정보 입력하기</v-btn>
+                <v-btn v-if="!showForm" color="orange" variant="text"  size="x-large" border @click="changShowForm(true)">배송정보 입력하기</v-btn>
             </div>
             <template v-if="showForm">
                 <v-divider></v-divider>
