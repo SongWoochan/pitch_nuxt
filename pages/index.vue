@@ -7,7 +7,7 @@ import { VNumberInput } from 'vuetify/labs/VNumberInput'
 useHead({
 	title: '다정농원 대극천 복숭아',
     meta: [
-        { property:'og:image', content: 'https://dajung-peach.pages.dev/img/peach_2.jpg' },
+        { property:'og:image', content: 'https://dajung-peach.pages.dev/img/preview_3.jpg' },
     	{ name: 'description', content: '1년동안 기다려주셔서 감사합니다. 대극천 복숭아 판매 시작합니다 😀' }
     ]
 })
@@ -243,7 +243,7 @@ watch(isSameName, (newValue, oldValue) => {
             rounded
         >
             <div class="mb-3">
-                <h2 class="text-h4 font-weight-black text-orange mb-10 word-keep">다정농원 대극천 복숭아</h2>
+                <h2 class="text-h4 font-weight-black text-green mb-10 word-keep">다정농원 대극천 복숭아</h2>
                 <div class="text-h5 font-weight-medium mb-5 word-keep">
                     1년동안 기다려주셔서 감사합니다.<br/> 대극천 복숭아 판매 시작합니다. 😀
                 </div>
