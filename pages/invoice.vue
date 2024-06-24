@@ -181,7 +181,7 @@ const totalPrice = (count: number, count2: number) => {
         <v-overlay  class="d-flex align-center justify-center flex-wrap text-center" v-model="isLoading">
             <v-progress-circular indeterminate></v-progress-circular>
         </v-overlay>   
-        <h2 class="text-center text-h4 font-weight-black text-orange my-6">다정농원 대극천 복숭아<br/>주문목록</h2>
+        <h2 class="text-center text-h4 font-weight-black text-green my-6">다정농원 대극천 복숭아<br/>주문목록</h2>
         <v-sheet v-if="!isAuth" rounded="lg">
             <v-card
             class="mx-auto pa-12 pb-8"
