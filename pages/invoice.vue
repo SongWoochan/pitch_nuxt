@@ -27,6 +27,7 @@ interface Invoice {
     state: string
     regTime: string
     pageId: string
+    comment: string
 }
 
 const invoiceList = ref<Array<Invoice>>([])
@@ -75,7 +76,8 @@ const searchList = async () => {
                 count2: item.properties['수량(2kg)']?.number ?? '',
                 state: item.properties['상태']?.select?.name ?? '',
                 regTime: dateFormat(new Date(item.created_time)),
-                pageId: item.id
+                pageId: item.id,
+                comment: item.properties['비고']?.rich_text[0]?.plain_text ?? '',
             })
         }
         
@@ -258,7 +260,7 @@ const totalPrice = (count: number, count2: number) => {
                         <div>
                             <v-container>
                                 <v-row> 
-                                    <v-col class="pa-0 pl-3 text-caption" cols="3" sm="3">주문일시</v-col>
+                                    <v-col class="pa-0 pt-1 pl-3 text-caption" cols="3" sm="3">주문일시</v-col>
                                     <v-col class="pa-0" cols="9" sm="9">{{ invoice.regTime }}
                                         <v-chip v-if="invoice.state === '발송완료'" class="ml-2 mb-1" size="small" color="green" variant="outlined" label>
                                             발송완료
@@ -276,23 +278,27 @@ const totalPrice = (count: number, count2: number) => {
                                     </v-col>
                                 </v-row>
                                 <v-row> 
-                                    <v-col class="pa-0 pl-3 text-caption" cols="3" sm="3">수량(3kg)</v-col>
+                                    <v-col class="pa-0 pt-1 pl-3 text-caption" cols="3" sm="3">수량(3kg)</v-col>
                                     <v-col class="pa-0" cols="9" sm="9">{{ invoice.count ? `${invoice.count} 박스` : '-' }}</v-col>
                                 </v-row>
                                 <v-row> 
-                                    <v-col class="pa-0 pl-3 text-caption" cols="3" sm="3">수량(2kg)</v-col>
+                                    <v-col class="pa-0 pt-1 pl-3 text-caption" cols="3" sm="3">수량(2kg)</v-col>
                                     <v-col class="pa-0" cols="4" sm="4">{{ invoice.count2 ? `${invoice.count2} 박스` : '-' }}</v-col>
                                     <v-col class="pa-0 pt-5 pb-5 d-flex align-end justify-end flex-wrap text-right " cols="5" sm="5">
                                         <v-field-label class="">총 {{ totalPrice(invoice.count, invoice.count2) }} 원</v-field-label>
                                     </v-col>
                                 </v-row>
                                 <v-row> 
-                                    <v-col class="pa-0 pl-3 text-caption" cols="3" sm="3">주소</v-col>
+                                    <v-col class="pa-0 pt-1 pl-3 text-caption" cols="3" sm="3">주소</v-col>
                                     <v-col class="pa-0" cols="9" sm="9">{{ `${invoice.postNo} ${invoice.address} ${invoice.addressDetail}` }}</v-col>
                                 </v-row>
                                 <v-row> 
-                                    <v-col class="pa-0 pl-3 text-caption" cols="3" sm="3">요청사항</v-col>
-                                    <v-col class="pa-0" cols="9" sm="9">{{ invoice.memo }}</v-col>
+                                    <v-col class="pa-0 pt-1 pl-3 text-caption" cols="3" sm="3">요청사항</v-col>
+                                    <v-col class="pa-0" cols="9" sm="9">{{ invoice.memo ? invoice.memo : '-' }}</v-col>
+                                </v-row>
+                                <v-row> 
+                                    <v-col class="pa-0 pt-1 pl-3 text-caption" cols="3" sm="3">비고</v-col>
+                                    <v-col class="pa-0" cols="9" sm="9">{{ invoice.comment ? invoice.comment : '-' }}</v-col>
                                 </v-row>
                             </v-container>
                         </div>
@@ -310,6 +316,9 @@ const totalPrice = (count: number, count2: number) => {
 .my-frame {
     max-width: 700px;
     margin: 0 auto;
+}
+.my-frame .text-caption {
+    min-height: 30px;
 }
 .btn-wrap {
     width: 90px;
