@@ -6,7 +6,7 @@ import { useRouter } from 'vue-router';
 useHead({
 	title: '복숭아 주문 목록',
     meta: [
-        { property:'og:image', content: 'https://dajung-peach.pages.dev/img/invoice_preview.png' },
+        { property:'og:image', content: 'https://noh-dajung-peach.pages.dev/img/invoice_preview.png' },
     	{ name: 'description', content: '복숭아 주문 목록 페이지입니다.' }
     ]
 })
