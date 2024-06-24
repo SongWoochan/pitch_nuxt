@@ -37,6 +37,10 @@ export default defineEventHandler(async (event) => {
                             type: "title",
                             title: [{ type: "text", text: { content: body.name } }],
                         },
+                        "받는사람": { 
+                            type: "rich_text",
+                            rich_text: [{ type: "text", text: { content: body.receiver } }],
+                        },
                         "전화번호": { 
                             type: "rich_text",
                             rich_text: [{ type: "text", text: { content: body.phoneNo } }],

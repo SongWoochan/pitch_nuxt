@@ -17,6 +17,7 @@ const result = ref()
 
 interface Invoice {
     name: string
+    receiver: string
     phoneNo: string
     postNo: string
     address: string
@@ -67,6 +68,7 @@ const searchList = async () => {
         for (const item of (list as any).results as any) {
             invoiceList.value?.push({
                 name: item.properties['이름']?.title[0]?.plain_text ?? '',
+                receiver: item.properties['받는사람']?.rich_text[0]?.plain_text ?? '',
                 phoneNo: item.properties['전화번호']?.rich_text[0]?.plain_text ?? '',
                 postNo: item.properties['우편번호']?.rich_text[0]?.plain_text ?? '',
                 address: item.properties['주소']?.rich_text[0]?.plain_text ?? '',
@@ -287,6 +289,10 @@ const totalPrice = (count: number, count2: number) => {
                                     <v-col class="pa-0 pt-5 pb-5 d-flex align-end justify-end flex-wrap text-right " cols="5" sm="5">
                                         <v-field-label class="">총 {{ totalPrice(invoice.count, invoice.count2) }} 원</v-field-label>
                                     </v-col>
+                                </v-row>
+                                <v-row> 
+                                    <v-col class="pa-0 pt-1 pl-3 text-caption" cols="3" sm="3">받는사람</v-col>
+                                    <v-col class="pa-0" cols="9" sm="9">{{ `${invoice.receiver}` }}</v-col>
                                 </v-row>
                                 <v-row> 
                                     <v-col class="pa-0 pt-1 pl-3 text-caption" cols="3" sm="3">주소</v-col>

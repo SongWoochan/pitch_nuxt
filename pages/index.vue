@@ -19,6 +19,7 @@ const result = ref()
 
 interface Invoice {
     name: string
+    receiver: string
     phoneNo: string
     postNo: string
     address: string
@@ -30,6 +31,7 @@ interface Invoice {
 
 const data = ref<Invoice>({
     name: '',
+    receiver: '',
     phoneNo: '',
     postNo: '',
     address: '',
@@ -41,6 +43,7 @@ const data = ref<Invoice>({
 
 const resetData = () => {
     data.value.name = ''
+    data.value.receiver = ''
     data.value.phoneNo = ''
     data.value.postNo = ''
     data.value.address = ''
@@ -48,6 +51,8 @@ const resetData = () => {
     data.value.memo = ''
     data.value.count = 0
     data.value.count2 = 0
+
+    isSameName.value = true
 }
 
 const showForm = ref(false)
@@ -201,6 +206,23 @@ const totalPrice = computed(() => {
     return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 })
 
+const isSameName = ref(true)
+
+watch(() => data.value.name, () =>{
+    if (isSameName.value) {
+        data.value.receiver = data.value.name
+    }
+})
+
+watch(isSameName, (newValue, oldValue) => {
+    console.log('newValue', newValue, oldValue)
+    if (newValue) {
+        data.value.receiver = data.value.name
+    } else {
+        data.value.receiver = ''
+    }
+})
+
 </script>
 <template>
     <v-container class="my-frame pa-0">
@@ -250,7 +272,7 @@ const totalPrice = computed(() => {
                     <v-container>
                         <v-row> 
                             <v-col class="pa-0" cols="12" sm="12">
-                                <v-text-field v-model="data.name" label="성함" variant="outlined"  density="comfortable" @submit.prevent/>
+                                <v-text-field v-model="data.name" label="성함(입금자)" variant="outlined"  density="comfortable" @submit.prevent/>
                             </v-col>
                         </v-row>
                         <v-row> 
@@ -277,6 +299,14 @@ const totalPrice = computed(() => {
                         <v-row> 
                             <v-col class="pa-0 pt-5 pb-5 d-flex align-end justify-end flex-wrap text-right " cols="12" sm="12">
                                 <v-field-label class="">총 {{ totalPrice }} 원</v-field-label>
+                            </v-col>
+                        </v-row>
+                        <v-row> 
+                            <v-col class="pa-0" cols="6" sm="6">
+                                <v-text-field v-model="data.receiver" label="받는사람" variant="outlined"  density="comfortable" :disabled="isSameName" @submit.prevent/>
+                            </v-col>
+                            <v-col class="pa-0" cols="6" sm="6">
+                                <v-checkbox label="입금자와 동일" v-model="isSameName" color="success"></v-checkbox>
                             </v-col>
                         </v-row>
                         <v-row> 
