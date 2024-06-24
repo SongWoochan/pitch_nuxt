@@ -202,7 +202,7 @@ const popImgSrc = computed(() => {
 })
 
 const totalPrice = computed(() => {
-    const price = data.value.count * 39000 + data.value.count2 * 27000
+    const price = data.value.count * 34000 + data.value.count2 * 24000
     return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 })
 
@@ -215,7 +215,6 @@ watch(() => data.value.name, () =>{
 })
 
 watch(isSameName, (newValue, oldValue) => {
-    console.log('newValue', newValue, oldValue)
     if (newValue) {
         data.value.receiver = data.value.name
     } else {
@@ -249,8 +248,8 @@ watch(isSameName, (newValue, oldValue) => {
                     1년동안 기다려주셔서 감사합니다.<br/> 대극천 복숭아 판매 시작합니다. 😀
                 </div>
                 <p class="text-body-4 mb-7">
-                    3kg 39,000원 (상자 당 택배비 포함가격) <br/>
-                    2kg 27,000원 (상자 당 택배비 포함가격) <br/>
+                    3kg 34,000원 (상자 당 택배비 포함가격) <br/>
+                    2kg 24,000원 (상자 당 택배비 포함가격) <br/>
                     아래 '배송정보 입력하기'를 눌러 배송지를 보내주세요~!
                 </p>
                 <div class="mb-10 word-keep" style="color:gray;">

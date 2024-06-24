@@ -171,7 +171,7 @@ const dateFormat = (date: Date) => {
 }
 
 const totalPrice = (count: number, count2: number) => {
-    const price = count * 39000 + count2 * 27000
+    const price = count * 34000 + count2 * 24000
     return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 </script>
