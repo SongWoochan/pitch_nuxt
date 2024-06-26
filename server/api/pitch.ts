@@ -1,13 +1,12 @@
-import { Client }  from '@notionhq/client'
 import { ErrorTypes } from 'vue-router'
 
 export default defineEventHandler(async (event) => {
 
     const runtimeConfig = useRuntimeConfig()
     
-    const secretKey = runtimeConfig.notionToken
-    const databaseId = runtimeConfig.notionDatabasePitch
-    const password = runtimeConfig.notionPassword
+    const secretKey = runtimeConfig.NOTION_TOKEN
+    const databaseId = runtimeConfig.NOTION_DATABASE_PITCH
+    const password = runtimeConfig.ADMIN_PWD
 
     const body = await readBody(event)
 
