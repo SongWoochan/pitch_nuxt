@@ -9,7 +9,7 @@ const runtimeConfig = useRuntimeConfig()
 useHead({
 	title: '다정농원 대극천 복숭아',
     meta: [
-        { property:'og:image', content: `${runtimeConfig.public.DOMAIN}/img/peach_2.jpg` },
+        { property:'og:image', content: `${runtimeConfig.public.DOMAIN}/img/preview_3.jpg` },
     	{ name: 'description', content: '1년동안 기다려주셔서 감사합니다. 대극천 복숭아 판매 시작합니다 😀' }
     ],
     script : [
