@@ -67,6 +67,12 @@ const resetData = () => {
 const showForm = ref(false)
 
 const changShowForm = (isShow: boolean) => {
+
+    // 장마철 주문 중지
+    showDialog.value = true
+    return
+    // 장마철 주문 중지
+
     showForm.value = isShow
 }
 
@@ -89,6 +95,11 @@ const isValid = (): boolean => {
 }
 
 const apiCall = async () => {
+    // 장마철 주문 중지
+    showDialog.value = true
+    return
+    // 장마철 주문 중지
+
     if (!isValid()) {
         return
     }
@@ -229,6 +240,14 @@ watch(isSameName, (newValue, oldValue) => {
     } else {
         data.value.receiver = ''
     }
+})
+
+const showDialog = ref(false)
+
+onMounted(() => {
+    // 장마철 주문 중지
+    showDialog.value = true
+    // 장마철 주문 중지
 })
 
 </script>
@@ -390,6 +409,25 @@ watch(isSameName, (newValue, oldValue) => {
             ></v-carousel-item>
         </v-carousel>
     </v-container>
+    <v-dialog
+      v-model="showDialog"
+      width="auto"
+    >
+      <v-card
+        max-width="400"
+        prepend-icon="mdi-alert-circle-outline"
+        title="공지사항"
+        text="장마가 지나가면 주문을 재개할 예정이에요. 조금만 기다려주세요."
+      >
+        <template v-slot:actions>
+          <v-btn
+            class="ms-auto"
+            text="Ok"
+            @click="showDialog = false"
+          ></v-btn>
+        </template>
+      </v-card>
+    </v-dialog>
 </template>
 
 
