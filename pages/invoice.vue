@@ -3,13 +3,19 @@ import { useFetch } from 'nuxt/app';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
+const runtimeConfig = useRuntimeConfig()
+
 useHead({
 	title: '복숭아 주문 목록',
     meta: [
-        { property:'og:image', content: 'https://dajung-peach.pages.dev/img/invoice_preview.png' },
+        { property:'og:image', content: `${runtimeConfig.public.DOMAIN}/img/invoice_preview.png` },
     	{ name: 'description', content: '복숭아 주문 목록 페이지입니다.' }
     ]
 })
+
+
+const price3kg = Number(runtimeConfig.public.PRICE_3KG ?? 0)
+const price2kg = Number(runtimeConfig.public.PRICE_2KG ?? 0)
 
 const router = useRouter()
 
@@ -87,10 +93,13 @@ const searchList = async () => {
         hasMore.value = (result as any)?.list.has_more
 
         if (!isAuth.value) isAuth.value = true
+        console.log('f (!isAuth.value) isAuth.value = true')
 
     } else {
         alert ((result as any)?.message ?? 'fail...')
         password.value = ''
+        searchReset()
+        console.log('asdfasdfasdf')
     }
     
     isLoading.value = false
@@ -131,7 +140,14 @@ const login = () => {
     searchList()
 }
 
-const tabs = ['전체', '주문접수', '입금완료', '발송완료', '주문취소']
+const tabs = [
+    { text: '전체', value: '전체'},
+    { text: '주문접수', value: '주문접수'},
+    { text: '입금완료', value: '입금완료'},
+    { text: '발송완료', value: '발송완료'},
+    { text: '주문취소', value: '주문취소'},
+]
+
 const tab = ref('전체')
 const searchState = ref('')
 
@@ -171,8 +187,8 @@ const dateFormat = (date: Date) => {
 }
 
 const totalPrice = (count: number, count2: number) => {
-    const price = count * 39000 + count2 * 27000
-    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    const price = (count * price3kg) + (count2 * price2kg)
+    return priceFomat(price)
 }
 </script>
 
@@ -213,7 +229,6 @@ const totalPrice = (count: number, count2: number) => {
                 >
                     <template v-slot:tab="{ item }">
                         <v-tab
-                        :prepend-icon="item.icon"
                         :text="item.text"
                         :value="item.value"
                         class="text-none"
@@ -311,7 +326,7 @@ const totalPrice = (count: number, count2: number) => {
                     </v-card>
                 </v-list-item>
             </v-list>
-            <div class="d-flex align-center justify-center flex-no-wrap justify-space-between">
+            <div class="d-flex align-center justify-center flex-no-wrap justify-space-between mb-10">
                 <v-btn v-if="hasMore" class="mx-auto" @click="searchList()">더보기</v-btn>
             </div>
         </template>

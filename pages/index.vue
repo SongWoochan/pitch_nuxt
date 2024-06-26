@@ -4,13 +4,22 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { VNumberInput } from 'vuetify/labs/VNumberInput'
 
+const runtimeConfig = useRuntimeConfig()
+
 useHead({
 	title: '다정농원 대극천 복숭아',
     meta: [
-        { property:'og:image', content: 'https://dajung-peach.pages.dev/img/peach_2.jpg' },
+        { property:'og:image', content: `${runtimeConfig.public.DOMAIN}/img/peach_2.jpg` },
     	{ name: 'description', content: '1년동안 기다려주셔서 감사합니다. 대극천 복숭아 판매 시작합니다 😀' }
-    ]
+    ],
+    script : [
+    // 다음 주소 검색 API
+        { src: '//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js' },
+    ],
 })
+
+const price3kg = Number(runtimeConfig.public.PRICE_3KG ?? 0)
+const price2kg = Number(runtimeConfig.public.PRICE_2KG ?? 0)
 
 
 const router = useRouter()
@@ -202,8 +211,8 @@ const popImgSrc = computed(() => {
 })
 
 const totalPrice = computed(() => {
-    const price = data.value.count * 39000 + data.value.count2 * 27000
-    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    const price = (data.value.count * price3kg) + (data.value.count2 * price2kg)
+    return priceFomat(price)
 })
 
 const isSameName = ref(true)
@@ -249,8 +258,8 @@ watch(isSameName, (newValue, oldValue) => {
                     1년동안 기다려주셔서 감사합니다.<br/> 대극천 복숭아 판매 시작합니다. 😀
                 </div>
                 <p class="text-body-4 mb-7">
-                    3kg 39,000원 (상자 당 택배비 포함가격) <br/>
-                    2kg 27,000원 (상자 당 택배비 포함가격) <br/>
+                    3kg {{ priceFomat(price3kg) }}원 (상자 당 택배비 포함가격) <br/>
+                    2kg {{ priceFomat(price2kg) }}원 (상자 당 택배비 포함가격) <br/>
                     아래 '배송정보 입력하기'를 눌러 배송지를 보내주세요~!
                 </p>
                 <div class="mb-10 word-keep" style="color:gray;">
