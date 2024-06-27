@@ -365,7 +365,8 @@ onMounted(() => {
                             <v-col class="pa-0" cols="12" sm="12">
                                 <v-textarea label="배송 요청사항 (우체국 택배 기입용)" variant="outlined" 
                                     placeholder="ex) 문 앞에 놔주세요." density="comfortable"
-                                >{{ data.memo }}</v-textarea>
+                                    v-model="data.memo"
+                                ></v-textarea>
                             </v-col>
                         </v-row>
                     </v-container>
