@@ -69,8 +69,8 @@ const showForm = ref(false)
 const changShowForm = (isShow: boolean) => {
 
     // 장마철 주문 중지
-    // showDialog.value = true
-    // return
+    showDialog.value = true
+    return
     // 장마철 주문 중지
 
     showForm.value = isShow
@@ -96,8 +96,8 @@ const isValid = (): boolean => {
 
 const apiCall = async () => {
     // 장마철 주문 중지
-    // showDialog.value = true
-    // return
+    showDialog.value = true
+    return
     // 장마철 주문 중지
 
     if (!isValid()) {
@@ -120,7 +120,6 @@ const apiCall = async () => {
 
     if (result.value?.code === 200) {
         alert('정상처리되었습니다.\n이용해주셔서 감사합니다!')
-        // router.push('/')
         resetData()
         changShowForm(false)
     } else {
@@ -246,7 +245,7 @@ const showDialog = ref(false)
 
 onMounted(() => {
     // 장마철 주문 중지
-    // showDialog.value = true
+    showDialog.value = true
     // 장마철 주문 중지
 })
 
@@ -417,7 +416,7 @@ onMounted(() => {
         max-width="400"
         prepend-icon="mdi-alert-circle-outline"
         title="공지사항"
-        text="장마가 지나가면 주문을 재개할 예정이에요. 조금만 기다려주세요."
+        text="죄송합니다. 물량이 소진되어 장마가 지나가면 재개 할 예정입니다. 감사합니다."
       >
         <template v-slot:actions>
           <v-btn
