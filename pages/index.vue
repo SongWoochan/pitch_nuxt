@@ -284,9 +284,8 @@ onMounted(() => {
                 <div class="mb-10 word-keep" style="color:gray;">
                     <p>1. 배송은 입금 순으로 순차적으로 발송됩니다.</p>
                     <p>2. 당일수확, 당일배송을 원칙으로 합니다.</p>
-                    <p>3. 금요일은 택배발송을 하지않습니다.<br/> ( 유통 과정에서 후숙되어 상할 수 있기 때문)</p>
-                    <p>4. 금,토,일 주문 건은 월요일에 순차적으로 발송됩니다.</p>
-                    <p>5. 발송 전 주문취소 건 및 기타 문의 사항은<br/> 
+                    <p>3. 토,일 주문 건은 월요일에 순차적으로 발송됩니다.</p>
+                    <p>4. 발송 전 주문취소 건 및 기타 문의 사항은<br/> 
                         <v-btn variant="outlined" append-icon="mdi-gesture-tap">
                             <a href="https://open.kakao.com/me/dajung_peach" target="_blank">카카오톡 문의</a>
                             <!-- <v-icon icon="mdi-gesture-tap" size="large"></v-icon> -->
