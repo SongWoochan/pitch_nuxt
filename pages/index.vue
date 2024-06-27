@@ -69,8 +69,8 @@ const showForm = ref(false)
 const changShowForm = (isShow: boolean) => {
 
     // 장마철 주문 중지
-    showDialog.value = true
-    return
+    // showDialog.value = true
+    // return
     // 장마철 주문 중지
 
     showForm.value = isShow
@@ -96,8 +96,8 @@ const isValid = (): boolean => {
 
 const apiCall = async () => {
     // 장마철 주문 중지
-    showDialog.value = true
-    return
+    // showDialog.value = true
+    // return
     // 장마철 주문 중지
 
     if (!isValid()) {
@@ -246,7 +246,7 @@ const showDialog = ref(false)
 
 onMounted(() => {
     // 장마철 주문 중지
-    showDialog.value = true
+    // showDialog.value = true
     // 장마철 주문 중지
 })
 
