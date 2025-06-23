@@ -67,12 +67,6 @@ const resetData = () => {
 const showForm = ref(false)
 
 const changShowForm = (isShow: boolean) => {
-
-    // 장마철 주문 중지
-    showDialog.value = true
-    return
-    // 장마철 주문 중지
-
     showForm.value = isShow
 }
 
@@ -95,11 +89,6 @@ const isValid = (): boolean => {
 }
 
 const apiCall = async () => {
-    // 장마철 주문 중지
-    showDialog.value = true
-    return
-    // 장마철 주문 중지
-
     if (!isValid()) {
         return
     }
@@ -217,11 +206,12 @@ const openImage = (i: number) => {
 
 const popImgSrc = computed(() => {
     console.log(`/img/peach/${popImgNo.value ?? 0}.jpg`)
-    return `/img/peach/${popImgNo.value ?? 0}.jpg`
+    return `/img/peach/origin/${popImgNo.value ?? 0}.jpg`
 })
 
 const totalPrice = computed(() => {
-    const price = (data.value.count * price3kg) + (data.value.count2 * price2kg)
+    // const price = (data.value.count * price3kg) + (data.value.count2 * price2kg)
+    const price = (data.value.count * price3kg)
     return priceFomat(price)
 })
 
@@ -246,7 +236,7 @@ const showDialog = ref(false)
 
 onMounted(() => {
     // 장마철 주문 중지
-    showDialog.value = true
+    // showDialog.value = true
     // 장마철 주문 중지
 })
 
@@ -271,24 +261,37 @@ onMounted(() => {
             rounded
         >
             <div class="mb-3">
-                <h2 class="text-h4 font-weight-black text-orange mb-10 word-keep">다정농원 대극천 복숭아</h2>
+                <h2 class="text-h4 font-weight-black text-orange mb-10 word-keep">대극천 명품 복숭아</h2>
                 <div class="text-h5 font-weight-medium mb-5 word-keep">
-                    1년동안 기다려주셔서 감사합니다.<br/> 대극천 복숭아 판매 시작합니다. 😀
+                    직접 키운 복숭아, 정직하게 담았습니다.
                 </div>
                 <p class="text-body-4 mb-7">
+                    저희 부모님께서 전남 화순에서 직접 농사 지은 복숭아입니다. <br/>
+                    자연에 가까운 방식으로 정성껏 키운 복숭아, <br/>
+                    향기 깊고, 당도 높고, 식감 좋은 복숭아만 엄선해 보내드립니다.
+                </p>
+                <!-- <p class="text-body-4 mb-7">
                     3kg {{ priceFomat(price3kg) }}원 (상자 당 택배비 포함가격) <br/>
                     2kg {{ priceFomat(price2kg) }}원 (상자 당 택배비 포함가격) <br/>
                     아래 '배송정보 입력하기'를 눌러 배송지를 보내주세요~!
-                </p>
-                <div class="mb-10 word-keep" style="color:gray;">
-                    <p>1. 배송은 입금 순으로 순차적으로 발송됩니다.</p>
-                    <p>2. 당일수확, 당일배송을 원칙으로 합니다.</p>
-                    <p>3. 토,일 주문 건은 월요일에 순차적으로 발송됩니다.</p>
-                    <p>4. 발송 전 주문취소 건 및 기타 문의 사항은<br/> 
-                        <v-btn variant="outlined" append-icon="mdi-gesture-tap">
-                            <a href="https://open.kakao.com/me/dajung_peach" target="_blank">카카오톡 문의</a>
+                </p> -->
+                <div class="mb-10 word-keep " style="color:black;">
+                    <p>✔ 당일 수확, 산지 직송</p>
+                    <p>✔ 당도 측정기로 확인한 12브릭스 이상</p>
+                    <p>✔ 크기 선별: 중과 기준 (18과/3.5kg이상)</p>
+                    <p>✔ 선물용 & 가정용 모두 추천드립니다!</p>
+                </div>
+                <div class="mb-10 word-keep" style="color:black;">
+                    <p>🎁 3kg 단위 구매 가능</p>
+                    <p>🚚 우체국 택배 발송 (선착순 주문 당일 출고)</p>
+                </div>
+                <div class="mb-10 word-keep" style="color:black;">
+                    <p>
+                        <v-btn variant="outlined" prepend-icon="mdi-message-text-outline">
+                            <a href="https://open.kakao.com/me/dajung_peach" target="_blank">카카오톡 채널</a>
                             <!-- <v-icon icon="mdi-gesture-tap" size="large"></v-icon> -->
-                        </v-btn> 로 연락바랍니다.</p>
+                        </v-btn> 로 문의<v-icon icon="mdi-gesture-tap" size="large"></v-icon> 주세요!
+                    </p>
                 </div>
                 <v-btn v-if="!showForm" color="orange" variant="text"  size="x-large" border @click="changShowForm(true)">배송정보 입력하기</v-btn>
             </div>
@@ -314,14 +317,14 @@ onMounted(() => {
                                 <v-number-input variant="outlined" control-variant="split" v-model="data.count" :min="0" :max="20" density="comfortable" ></v-number-input>
                             </v-col>
                         </v-row>
-                        <v-row> 
+                        <!-- <v-row> 
                             <v-col class="pa-0 pb-5 d-flex align-center justify-center flex-wrap text-center " cols="4" sm="4">
                                 <v-field-label class="">수량(2kg 박스)</v-field-label>
                             </v-col>
                             <v-col class="pa-0" cols="8" sm="8">
                                 <v-number-input variant="outlined" control-variant="split" v-model="data.count2" :min="0" :max="20" density="comfortable" ></v-number-input>
                             </v-col>
-                        </v-row>
+                        </v-row> -->
                         <v-row> 
                             <v-col class="pa-0 pt-5 pb-5 d-flex align-end justify-end flex-wrap text-right " cols="12" sm="12">
                                 <v-field-label class="">총 {{ totalPrice }} 원</v-field-label>
@@ -401,7 +404,7 @@ onMounted(() => {
             :interval="5000"
         >
             <v-carousel-item
-                v-for="n in 8"
+                v-for="n in 7"
                 :key="n"
                 :src="`/img/peach/${n-1}.jpg`"
                 :aspect-ratio="1.2"
