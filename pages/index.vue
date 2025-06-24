@@ -108,7 +108,7 @@ const apiCall = async () => {
     console.log('result.value?.message', result.value?.message)
 
     if (result.value?.code === 200) {
-        alert('정상처리되었습니다.\n이용해주셔서 감사합니다!')
+        alert(result.value?.message || '정상처리되었습니다.\n이용해주셔서 감사합니다!')
         resetData()
         changShowForm(false)
     } else {
@@ -265,7 +265,7 @@ onMounted(() => {
                 <div class="text-h5 font-weight-medium mb-5 word-keep">
                     직접 키운 복숭아, 정직하게 담았습니다.
                 </div>
-                <p class="text-body-4 mb-7">
+                <p class="text-body-4 mb-7 word-keep">
                     저희 부모님께서 전남 화순에서 직접 농사 지은 복숭아입니다. <br/>
                     자연에 가까운 방식으로 정성껏 키운 복숭아, <br/>
                     향기 깊고, 당도 높고, 식감 좋은 복숭아만 엄선해 보내드립니다.
