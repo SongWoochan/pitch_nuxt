@@ -36,6 +36,7 @@ interface Invoice {
     memo: string
     count: number
     count2: number
+    datetime: string
 }
 
 const data = ref<Invoice>({
@@ -48,6 +49,7 @@ const data = ref<Invoice>({
     memo: '',
     count: 0,
     count2: 0,
+    datetime: '',
 })
 
 const resetData = () => {
@@ -60,8 +62,16 @@ const resetData = () => {
     data.value.memo = ''
     data.value.count = 0
     data.value.count2 = 0
+    data.value.datetime = ''
 
     isSameName.value = true
+}
+
+const STORAGE_KEY = 'orderList';
+const orderList = ref<Invoice>([])
+function addOrder(item) {
+  orderList.value.unshift(JSON.parse(JSON.stringify(item)));
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(orderList.value));
 }
 
 const showForm = ref(false)
@@ -109,6 +119,8 @@ const apiCall = async () => {
 
     if (result.value?.code === 200) {
         alert(result.value?.message || '정상처리되었습니다.\n이용해주셔서 감사합니다!')
+        data.value.datetime = formatNow()
+        addOrder(data.value)
         resetData()
         changShowForm(false)
     } else {
@@ -217,6 +229,21 @@ const totalPrice = computed(() => {
 
 const isSameName = ref(true)
 
+function pad2(n: number): string {
+  return n.toString().padStart(2, '0');
+}
+
+function formatNow(): string {
+  const now = new Date();
+  const Y = now.getFullYear();
+  const M = pad2(now.getMonth() + 1);    // 월은 0~11
+  const D = pad2(now.getDate());
+  const h = pad2(now.getHours());
+  const m = pad2(now.getMinutes());
+  const s = pad2(now.getSeconds());
+  return `${Y}-${M}-${D} ${h}:${m}:${s}`;
+}
+
 watch(() => data.value.name, () =>{
     if (isSameName.value) {
         data.value.receiver = data.value.name
@@ -238,6 +265,11 @@ onMounted(() => {
     // 장마철 주문 중지
     // showDialog.value = true
     // 장마철 주문 중지
+
+    
+    const orderListJson = localStorage.getItem(STORAGE_KEY);
+    orderList.value = orderListJson ? JSON.parse(orderListJson) : [];
+    console.log('orderList.value', orderList.value)
 })
 
 </script>
@@ -395,6 +427,16 @@ onMounted(() => {
             </div>
             </v-card-item>
         </v-card>
+        <div class="mb-3 mt-3" v-if="orderList.length > 0">
+            <p class="text-body-4  pl-4 word-keep">📜접수내역</p>
+            <div class="px-5 pt-5 word-keep " style="color:gray;"
+                v-for="order  in orderList" :key="order.datetime">
+                <p>접수일시 : {{ order.datetime }}</p>
+                <p>받는사람 : {{ `${order.name} | ${order.count} 박스`}}</p>
+                <p>주소 : {{ `${order.address} ${order.addressDetail}` }}</p>
+                <v-divider class="mt-3"></v-divider>
+            </div>
+        </div>
         <v-divider class="my-10"></v-divider>
         <v-carousel 
             cycle
