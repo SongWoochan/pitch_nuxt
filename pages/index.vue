@@ -311,6 +311,7 @@ onMounted(() => {
                     <p>✔ 당일 수확, 산지 직송</p>
                     <p>✔ 당도 측정기로 확인한 12브릭스 이상</p>
                     <p>✔ 크기 선별: 중과 기준</p>
+                    <p>✔ 1박스(3kg) 44,000원 !!!!<br/>&nbsp;&nbsp;&nbsp;3kg 넘게 보내드려요~</p>
                     <p>✔ 선물용 & 가정용 모두 추천드립니다!</p>
                 </div>
                 <div class="mb-10 word-keep" style="color:black;">
