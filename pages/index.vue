@@ -310,7 +310,7 @@ onMounted(() => {
                 <div class="mb-10 word-keep " style="color:black;">
                     <p>✔ 당일 수확, 산지 직송</p>
                     <p>✔ 당도 측정기로 확인한 12브릭스 이상</p>
-                    <p>✔ 크기 선별: 중과 기준 (18과/3.5kg이상)</p>
+                    <p>✔ 크기 선별: 중과 기준</p>
                     <p>✔ 선물용 & 가정용 모두 추천드립니다!</p>
                 </div>
                 <div class="mb-10 word-keep" style="color:black;">
