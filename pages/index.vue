@@ -341,13 +341,13 @@ onMounted(async () => {
                 <div class="mb-10 word-keep " style="color:black;">
                     <p>✔ 당일 수확, 산지 직송</p>
                     <p>✔ 당도 측정기로 확인한 12브릭스 이상</p>
-                    <p>✔ 크기 선별: 중과 기준</p>
+                    <p>✔ 크기 선별: 중과 기준 (17~23과)</p>
                     <p>✔ 1박스(3kg) {{ price3kgView }}원 !!!!<br/>&nbsp;&nbsp;&nbsp;3kg 넘게 보내드려요~</p>
                     <p>✔ 선물용 & 가정용 모두 추천드립니다!</p>
                 </div>
                 <div class="mb-10 word-keep" style="color:black;">
                     <p>🎁 3kg 단위 구매 가능</p>
-                    <p>🚚 우체국 택배 발송 (선착순 주문 당일 출고)</p>
+                    <p>🚚 우체국 택배 선착순 발송<br/>(주문 물량 많을 시 다음날 발송)</p>
                 </div>
                 <div class="mb-10 word-keep" style="color:black;">
                     <p>
