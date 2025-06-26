@@ -18,9 +18,34 @@ useHead({
     ],
 })
 
-const price3kg = Number(runtimeConfig.public.PRICE_3KG ?? 0)
-const price2kg = Number(runtimeConfig.public.PRICE_2KG ?? 0)
 
+const getPrice = async () => {
+    const result = await $fetch('/api/pitch', {
+        method: 'POST',
+        body: {
+            type: 'PRICE',
+        }
+    })
+
+    if ((result as any)?.code === 200) {
+        const price = (result as any)?.result
+        return {
+            price3kg : price.price3kg,
+            price2kg : price.price3kg
+        }
+    } else {
+        alert ((result as any)?.message ?? 'fail...')
+        return {
+            price3kg : 0,
+            price2kg : 0
+        }
+    }
+}
+
+const priceRes = await getPrice()
+
+const price3kg = ref(priceRes.price3kg || Number(runtimeConfig.public.PRICE_3KG ?? 0))
+const price2kg = ref(priceRes.price2kg ||Number(runtimeConfig.public.PRICE_2KG ?? 0))
 
 const router = useRouter()
 
@@ -36,6 +61,7 @@ interface Invoice {
     memo: string
     count: number
     count2: number
+    datetime: string
 }
 
 const data = ref<Invoice>({
@@ -48,6 +74,7 @@ const data = ref<Invoice>({
     memo: '',
     count: 0,
     count2: 0,
+    datetime: '',
 })
 
 const resetData = () => {
@@ -60,19 +87,21 @@ const resetData = () => {
     data.value.memo = ''
     data.value.count = 0
     data.value.count2 = 0
+    data.value.datetime = ''
 
     isSameName.value = true
+}
+
+const STORAGE_KEY = 'orderList';
+const orderList = ref<Array<Invoice>>([])
+function addOrder(item: Invoice) {
+  orderList.value.unshift(JSON.parse(JSON.stringify(item)));
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(orderList.value));
 }
 
 const showForm = ref(false)
 
 const changShowForm = (isShow: boolean) => {
-
-    // 장마철 주문 중지
-    showDialog.value = true
-    return
-    // 장마철 주문 중지
-
     showForm.value = isShow
 }
 
@@ -95,11 +124,6 @@ const isValid = (): boolean => {
 }
 
 const apiCall = async () => {
-    // 장마철 주문 중지
-    showDialog.value = true
-    return
-    // 장마철 주문 중지
-
     if (!isValid()) {
         return
     }
@@ -119,7 +143,9 @@ const apiCall = async () => {
     console.log('result.value?.message', result.value?.message)
 
     if (result.value?.code === 200) {
-        alert('정상처리되었습니다.\n이용해주셔서 감사합니다!')
+        alert(result.value?.message || '정상처리되었습니다.\n이용해주셔서 감사합니다!')
+        data.value.datetime = formatNow()
+        addOrder(data.value)
         resetData()
         changShowForm(false)
     } else {
@@ -209,23 +235,47 @@ const copyToClipboard = () => {
 }
 
 const popImgNo = ref(0)
-const showPopImg = ref(false)
+const imgDialog = ref(false)
 const openImage = (i: number) => {
     popImgNo.value = i
-    showPopImg.value = true
+    imgDialog.value = true
 }
 
 const popImgSrc = computed(() => {
-    console.log(`/img/peach/${popImgNo.value ?? 0}.jpg`)
-    return `/img/peach/${popImgNo.value ?? 0}.jpg`
+    return `/img/peach/origin/${popImgNo.value ?? 0}.jpg`
+})
+
+
+const price3kgView = computed(() => {
+    return priceFomat(price3kg.value)
+})
+const price2kgView = computed(() => {
+    return priceFomat(price2kg.value)
 })
 
 const totalPrice = computed(() => {
-    const price = (data.value.count * price3kg) + (data.value.count2 * price2kg)
+    // const price = (data.value.count * price3kg.value) + (data.value.count2 * price2kg.value)
+    const price = (data.value.count * price3kg.value)
     return priceFomat(price)
 })
 
 const isSameName = ref(true)
+
+function pad2(n: number): string {
+  return n.toString().padStart(2, '0');
+}
+
+function formatNow(): string {
+  const now = new Date();
+  const Y = now.getFullYear();
+  const M = pad2(now.getMonth() + 1);    // 월은 0~11
+  const D = pad2(now.getDate());
+  const h = pad2(now.getHours());
+  const m = pad2(now.getMinutes());
+  const s = pad2(now.getSeconds());
+  return `${Y}-${M}-${D} ${h}:${m}:${s}`;
+}
+
 
 watch(() => data.value.name, () =>{
     if (isSameName.value) {
@@ -243,10 +293,13 @@ watch(isSameName, (newValue, oldValue) => {
 
 const showDialog = ref(false)
 
-onMounted(() => {
+onMounted(async () => {
     // 장마철 주문 중지
-    showDialog.value = true
+    // showDialog.value = true
     // 장마철 주문 중지
+    
+    const orderListJson = localStorage.getItem(STORAGE_KEY);
+    orderList.value = orderListJson ? JSON.parse(orderListJson) : [];
 })
 
 </script>
@@ -270,24 +323,38 @@ onMounted(() => {
             rounded
         >
             <div class="mb-3">
-                <h2 class="text-h4 font-weight-black text-green mb-10 word-keep">다정농원 대극천 복숭아</h2>
+                <h2 class="text-h4 font-weight-black text-green mb-10 word-keep">대극천 명품 복숭아</h2>
                 <div class="text-h5 font-weight-medium mb-5 word-keep">
-                    1년동안 기다려주셔서 감사합니다.<br/> 대극천 복숭아 판매 시작합니다. 😀
+                    직접 키운 복숭아, 정직하게 담았습니다.
                 </div>
-                <p class="text-body-4 mb-7">
-                    3kg {{ priceFomat(price3kg) }}원 (상자 당 택배비 포함가격) <br/>
-                    2kg {{ priceFomat(price2kg) }}원 (상자 당 택배비 포함가격) <br/>
-                    아래 '배송정보 입력하기'를 눌러 배송지를 보내주세요~!
+                <p class="text-body-4 mb-7 word-keep">
+                    저희 부모님께서 전남 화순에서 직접 농사 지은 복숭아입니다. <br/>
+                    자연에 가까운 방식으로 정성껏 키운 복숭아, <br/>
+                    향기 깊고, 당도 높고, 식감 좋은 복숭아만 엄선해 보내드립니다.
                 </p>
-                <div class="mb-10 word-keep" style="color:gray;">
-                    <p>1. 배송은 입금 순으로 순차적으로 발송됩니다.</p>
-                    <p>2. 당일수확, 당일배송을 원칙으로 합니다.</p>
-                    <p>3. 토,일 주문 건은 월요일에 순차적으로 발송됩니다.</p>
-                    <p>4. 발송 전 주문취소 건 및 기타 문의 사항은<br/> 
-                        <v-btn variant="outlined" append-icon="mdi-gesture-tap">
-                            <a href="https://open.kakao.com/me/dajung_peach" target="_blank">카카오톡 문의</a>
+                <!-- <p class="text-body-4 mb-7">
+                    3kg {{ price3kgView }}원 (상자 당 택배비 포함가격) <br/>
+                    2kg {{ price2kgView }}원 (상자 당 택배비 포함가격) <br/>
+                    아래 '배송정보 입력하기'를 눌러 배송지를 보내주세요~!
+                </p> -->
+                <div class="mb-10 word-keep " style="color:black;">
+                    <p>✔ 당일 수확, 산지 직송</p>
+                    <p>✔ 당도 측정기로 확인한 12브릭스 이상</p>
+                    <p>✔ 크기 선별: 중과 기준</p>
+                    <p>✔ 1박스(3kg) {{ price3kgView }}원 !!!!<br/>&nbsp;&nbsp;&nbsp;3kg 넘게 보내드려요~</p>
+                    <p>✔ 선물용 & 가정용 모두 추천드립니다!</p>
+                </div>
+                <div class="mb-10 word-keep" style="color:black;">
+                    <p>🎁 3kg 단위 구매 가능</p>
+                    <p>🚚 우체국 택배 발송 (선착순 주문 당일 출고)</p>
+                </div>
+                <div class="mb-10 word-keep" style="color:black;">
+                    <p>
+                        <v-btn variant="outlined" prepend-icon="mdi-message-text-outline">
+                            <a href="https://open.kakao.com/me/dajung_peach" target="_blank">카카오톡 채널</a>
                             <!-- <v-icon icon="mdi-gesture-tap" size="large"></v-icon> -->
-                        </v-btn> 로 연락바랍니다.</p>
+                        </v-btn> 로 문의<v-icon icon="mdi-gesture-tap" size="large"></v-icon> 주세요!
+                    </p>
                 </div>
                 <v-btn v-if="!showForm" color="orange" variant="text"  size="x-large" border @click="changShowForm(true)">배송정보 입력하기</v-btn>
             </div>
@@ -313,14 +380,14 @@ onMounted(() => {
                                 <v-number-input variant="outlined" control-variant="split" v-model="data.count" :min="0" :max="20" density="comfortable" ></v-number-input>
                             </v-col>
                         </v-row>
-                        <v-row> 
+                        <!-- <v-row> 
                             <v-col class="pa-0 pb-5 d-flex align-center justify-center flex-wrap text-center " cols="4" sm="4">
                                 <v-field-label class="">수량(2kg 박스)</v-field-label>
                             </v-col>
                             <v-col class="pa-0" cols="8" sm="8">
                                 <v-number-input variant="outlined" control-variant="split" v-model="data.count2" :min="0" :max="20" density="comfortable" ></v-number-input>
                             </v-col>
-                        </v-row>
+                        </v-row> -->
                         <v-row> 
                             <v-col class="pa-0 pt-5 pb-5 d-flex align-end justify-end flex-wrap text-right " cols="12" sm="12">
                                 <v-field-label class="">총 {{ totalPrice }} 원</v-field-label>
@@ -391,8 +458,47 @@ onMounted(() => {
             </div>
             </v-card-item>
         </v-card>
+        <div class="mb-3 mt-3" v-if="orderList.length > 0">
+            <p class="text-body-4  pl-4 word-keep">📜접수내역</p>
+            <div class="px-5 pt-5 word-keep " style="color:gray;"
+                v-for="order  in orderList" :key="order.datetime">
+                <p>접수일시 : {{ order.datetime }}</p>
+                <p>받는사람 : {{ `${order.name} | ${order.count} 박스`}}</p>
+                <p>주소 : {{ `${order.address} ${order.addressDetail}` }}</p>
+                <v-divider class="mt-3"></v-divider>
+            </div>
+        </div>
         <v-divider class="my-10"></v-divider>
-        <v-carousel 
+        <v-expansion-panels class="mb-10">
+            <v-expansion-panel>
+                <template #title>
+                    <v-icon start class="me-2">mdi-image-multiple</v-icon>
+                    다정농원 갤러리
+                </template>
+                <template #text>
+                    <v-container fluid>
+                        <v-row dense>
+                            <v-col
+                                v-for="n in 11"
+                                :key="n"
+                                cols="12"
+                                sm="4"
+                            >
+                            <v-img
+                                :src="`/img/peach/${n-1}.jpg`"
+                                aspect-ratio="1"
+                                class="rounded-sm elevation-2"
+                                cover
+                                @click="openImage(n-1)"
+                                style="cursor: pointer"
+                            ></v-img>
+                            </v-col>
+                        </v-row>
+                    </v-container>
+                </template>
+            </v-expansion-panel>
+        </v-expansion-panels>
+        <!-- <v-carousel 
             cycle
             color="grey-darken-4"
             hide-delimiters
@@ -400,13 +506,13 @@ onMounted(() => {
             :interval="5000"
         >
             <v-carousel-item
-                v-for="n in 8"
+                v-for="n in 7"
                 :key="n"
                 :src="`/img/peach/${n-1}.jpg`"
                 :aspect-ratio="1.2"
                 color="grey-darken-3"
             ></v-carousel-item>
-        </v-carousel>
+        </v-carousel> -->
     </v-container>
     <v-dialog
       v-model="showDialog"
@@ -426,6 +532,37 @@ onMounted(() => {
           ></v-btn>
         </template>
       </v-card>
+    </v-dialog>
+    <!-- 이미지 팝업 -->
+    <!-- <v-dialog v-model="imgDialog" max-width="800">
+        <v-card>
+            <v-img :src="popImgSrc" aspect-ratio="16/9" cover></v-img>
+        </v-card>
+    </v-dialog> -->
+    <v-dialog v-model="imgDialog" max-width="1000" scrollable>
+        <v-card
+            class="pa-0"
+            style="max-height: 90vh; overflow: auto;"
+        >
+        <div
+            style="
+            touch-action: manipulation;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            max-height: 90vh;
+            background-color: black;
+            "
+        >
+            <img
+                :src="popImgSrc"
+                style="max-width: 100%; max-height: 90vh;"
+                alt="확대 이미지"
+                @click="imgDialog = false"
+            />
+        </div>
+        </v-card>
     </v-dialog>
 </template>
 

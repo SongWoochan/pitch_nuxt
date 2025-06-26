@@ -6,10 +6,10 @@ import { useRouter } from 'vue-router';
 const runtimeConfig = useRuntimeConfig()
 
 useHead({
-	title: '복숭아 주문 목록',
+	title: '복숭아 주문 현황',
     meta: [
         { property:'og:image', content: `${runtimeConfig.public.DOMAIN}/img/invoice_preview.png` },
-    	{ name: 'description', content: '복숭아 주문 목록 페이지입니다.' }
+    	{ name: 'description', content: '복숭아 주문 현황 페이지입니다.' }
     ]
 })
 
@@ -93,13 +93,11 @@ const searchList = async () => {
         hasMore.value = (result as any)?.list.has_more
 
         if (!isAuth.value) isAuth.value = true
-        console.log('f (!isAuth.value) isAuth.value = true')
 
     } else {
         alert ((result as any)?.message ?? 'fail...')
         password.value = ''
         searchReset()
-        console.log('asdfasdfasdf')
     }
     
     isLoading.value = false

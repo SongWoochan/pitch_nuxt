@@ -33,9 +33,11 @@ export default defineNuxtConfig({
     },
   },
   runtimeConfig: {
+    PROFILE: process.env.PROFILE,
     ADMIN_PWD: process.env.ADMIN_PWD,
     NOTION_TOKEN: process.env.NOTION_TOKEN,
     NOTION_DATABASE_PITCH: process.env.NOTION_DATABASE_PITCH,
+    NOTION_DATABASE_PRICE: process.env.NOTION_DATABASE_PRICE,
     public: {
       PRICE_3KG: process.env.PRICE_3KG ?? '0',
       PRICE_2KG: process.env.PRICE_2KG ?? '0',
