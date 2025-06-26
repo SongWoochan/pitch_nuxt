@@ -235,14 +235,13 @@ const copyToClipboard = () => {
 }
 
 const popImgNo = ref(0)
-const showPopImg = ref(false)
+const imgDialog = ref(false)
 const openImage = (i: number) => {
     popImgNo.value = i
-    showPopImg.value = true
+    imgDialog.value = true
 }
 
 const popImgSrc = computed(() => {
-    console.log(`/img/peach/${popImgNo.value ?? 0}.jpg`)
     return `/img/peach/origin/${popImgNo.value ?? 0}.jpg`
 })
 
@@ -276,6 +275,7 @@ function formatNow(): string {
   const s = pad2(now.getSeconds());
   return `${Y}-${M}-${D} ${h}:${m}:${s}`;
 }
+
 
 watch(() => data.value.name, () =>{
     if (isSameName.value) {
@@ -470,7 +470,36 @@ onMounted(async () => {
             </div>
         </div>
         <v-divider class="my-10"></v-divider>
-        <v-carousel 
+        <v-expansion-panels class="mb-10">
+            <v-expansion-panel>
+                <template #title>
+                    <v-icon start class="me-2">mdi-image-multiple</v-icon>
+                    다정농원 갤러리
+                </template>
+                <template #text>
+                    <v-container fluid>
+                        <v-row dense>
+                            <v-col
+                                v-for="n in 11"
+                                :key="n"
+                                cols="12"
+                                sm="4"
+                            >
+                            <v-img
+                                :src="`/img/peach/${n-1}.jpg`"
+                                aspect-ratio="1"
+                                class="rounded-sm elevation-2"
+                                cover
+                                @click="openImage(n-1)"
+                                style="cursor: pointer"
+                            ></v-img>
+                            </v-col>
+                        </v-row>
+                    </v-container>
+                </template>
+            </v-expansion-panel>
+        </v-expansion-panels>
+        <!-- <v-carousel 
             cycle
             color="grey-darken-4"
             hide-delimiters
@@ -484,7 +513,7 @@ onMounted(async () => {
                 :aspect-ratio="1.2"
                 color="grey-darken-3"
             ></v-carousel-item>
-        </v-carousel>
+        </v-carousel> -->
     </v-container>
     <v-dialog
       v-model="showDialog"
@@ -504,6 +533,37 @@ onMounted(async () => {
           ></v-btn>
         </template>
       </v-card>
+    </v-dialog>
+    <!-- 이미지 팝업 -->
+    <!-- <v-dialog v-model="imgDialog" max-width="800">
+        <v-card>
+            <v-img :src="popImgSrc" aspect-ratio="16/9" cover></v-img>
+        </v-card>
+    </v-dialog> -->
+    <v-dialog v-model="imgDialog" max-width="1000" scrollable>
+        <v-card
+            class="pa-0"
+            style="max-height: 90vh; overflow: auto;"
+        >
+        <div
+            style="
+            touch-action: manipulation;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            max-height: 90vh;
+            background-color: black;
+            "
+        >
+            <img
+                :src="popImgSrc"
+                style="max-width: 100%; max-height: 90vh;"
+                alt="확대 이미지"
+                @click="imgDialog = false"
+            />
+        </div>
+        </v-card>
     </v-dialog>
 </template>
 

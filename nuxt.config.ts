@@ -33,6 +33,7 @@ export default defineNuxtConfig({
     },
   },
   runtimeConfig: {
+    PROFILE: process.env.PROFILE,
     ADMIN_PWD: process.env.ADMIN_PWD,
     NOTION_TOKEN: process.env.NOTION_TOKEN,
     NOTION_DATABASE_PITCH: process.env.NOTION_DATABASE_PITCH,

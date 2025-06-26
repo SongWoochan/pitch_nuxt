@@ -4,6 +4,7 @@ export default defineEventHandler(async (event) => {
 
     const runtimeConfig = useRuntimeConfig()
     
+    const profile = runtimeConfig.PROFILE
     const secretKey = runtimeConfig.NOTION_TOKEN
     const databaseId = runtimeConfig.NOTION_DATABASE_PITCH
     const databaseId_price = runtimeConfig.NOTION_DATABASE_PRICE
@@ -181,15 +182,15 @@ export default defineEventHandler(async (event) => {
             }
         }
     } else if (body.type === 'PRICE') {
-        // 목록 가져오기
+        // 가격 가져오기
         try {
 
             const requestBody: any = {
                 "page_size": 1,
                 "filter": {
-                    "property": "default",
-                    "checkbox": {
-                        "equals": true
+                    "property": "profile",
+                    "rich_text": {
+                        "equals": profile
                     }
                 },
                 "sorts": [
