@@ -340,6 +340,7 @@ onMounted(async () => {
                 <div class="mb-10 word-keep " style="color:black;">
                     <p>✔ 당일 수확, 산지 직송</p>
                     <p>✔ 당도 측정기로 확인한 평균 16브릭스</p>
+                    <p>✔ 화순 로컬푸드직매장 납품 복숭아</p>
                     <p>✔ 크기 선별: 중과 기준 (17~23과)</p>
                     <p>✔ 1박스(3kg) {{ price3kgView }}원 !!!!<br/>&nbsp;&nbsp;&nbsp;3kg 넘게 보내드려요~</p>
                     <p>✔ 선물용 & 가정용 모두 추천드립니다!</p>
