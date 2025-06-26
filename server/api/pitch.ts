@@ -6,7 +6,10 @@ export default defineEventHandler(async (event) => {
     
     const secretKey = runtimeConfig.NOTION_TOKEN
     const databaseId = runtimeConfig.NOTION_DATABASE_PITCH
+    const databaseId_price = runtimeConfig.NOTION_DATABASE_PRICE
     const password = runtimeConfig.ADMIN_PWD
+    const PRICE_3KG = runtimeConfig.PRICE_3KG
+    const PRICE_2KG = runtimeConfig.PRICE_2KG
 
     const body = await readBody(event)
 
@@ -167,6 +170,62 @@ export default defineEventHandler(async (event) => {
             })
 
 
+            
+            return { code: 200, message: 'success', result: result }
+
+        } catch (error) {
+            console.error(error)
+            if (error instanceof Error) {
+
+                return { code: 500, message: `${error.message}` }
+            }
+        }
+    } else if (body.type === 'PRICE') {
+        // 목록 가져오기
+        try {
+
+            const requestBody: any = {
+                "page_size": 1,
+                "filter": {
+                    "property": "default",
+                    "checkbox": {
+                        "equals": true
+                    }
+                },
+                "sorts": [
+                    {
+                        "property": "순번",
+                        "direction": "descending"
+                    }
+                ],
+            }
+
+            const list = await $fetch(`https://api.notion.com/v1/databases/${databaseId_price}/query`, {
+                method: 'POST',
+                headers: {
+                    Authorization: `Bearer ${secretKey}`,
+                    "Content-Type": 'application/json',
+                    "Notion-Version": '2022-06-28'
+                },
+                body: JSON.stringify(requestBody)
+            })
+
+            let price3kg = PRICE_3KG
+            let price2kg = PRICE_2KG
+
+            let result = {
+                price3kg : PRICE_3KG,
+                price2kg : PRICE_2KG
+            }
+
+            for (const item of (list as any).results as any) {
+                result.price3kg = item.properties['3kg가격']?.number ?? PRICE_3KG
+                result.price2kg = item.properties['2kg가격']?.number ?? PRICE_2KG
+
+                break;
+            }
+            
+            console.log('price', result)
             
             return { code: 200, message: 'success', result: result }
 

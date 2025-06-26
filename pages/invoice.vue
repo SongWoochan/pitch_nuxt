@@ -93,13 +93,11 @@ const searchList = async () => {
         hasMore.value = (result as any)?.list.has_more
 
         if (!isAuth.value) isAuth.value = true
-        console.log('f (!isAuth.value) isAuth.value = true')
 
     } else {
         alert ((result as any)?.message ?? 'fail...')
         password.value = ''
         searchReset()
-        console.log('asdfasdfasdf')
     }
     
     isLoading.value = false

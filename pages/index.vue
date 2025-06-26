@@ -18,9 +18,34 @@ useHead({
     ],
 })
 
-const price3kg = Number(runtimeConfig.public.PRICE_3KG ?? 0)
-const price2kg = Number(runtimeConfig.public.PRICE_2KG ?? 0)
 
+const getPrice = async () => {
+    const result = await $fetch('/api/pitch', {
+        method: 'POST',
+        body: {
+            type: 'PRICE',
+        }
+    })
+
+    if ((result as any)?.code === 200) {
+        const price = (result as any)?.result
+        return {
+            price3kg : price.price3kg,
+            price2kg : price.price3kg
+        }
+    } else {
+        alert ((result as any)?.message ?? 'fail...')
+        return {
+            price3kg : 0,
+            price2kg : 0
+        }
+    }
+}
+
+const priceRes = await getPrice()
+
+const price3kg = ref(priceRes.price3kg || Number(runtimeConfig.public.PRICE_3KG ?? 0))
+const price2kg = ref(priceRes.price2kg ||Number(runtimeConfig.public.PRICE_2KG ?? 0))
 
 const router = useRouter()
 
@@ -68,8 +93,8 @@ const resetData = () => {
 }
 
 const STORAGE_KEY = 'orderList';
-const orderList = ref<Invoice>([])
-function addOrder(item) {
+const orderList = ref<Array<Invoice>>([])
+function addOrder(item: Invoice) {
   orderList.value.unshift(JSON.parse(JSON.stringify(item)));
   localStorage.setItem(STORAGE_KEY, JSON.stringify(orderList.value));
 }
@@ -221,9 +246,17 @@ const popImgSrc = computed(() => {
     return `/img/peach/origin/${popImgNo.value ?? 0}.jpg`
 })
 
+
+const price3kgView = computed(() => {
+    return priceFomat(price3kg.value)
+})
+const price2kgView = computed(() => {
+    return priceFomat(price2kg.value)
+})
+
 const totalPrice = computed(() => {
-    // const price = (data.value.count * price3kg) + (data.value.count2 * price2kg)
-    const price = (data.value.count * price3kg)
+    // const price = (data.value.count * price3kg.value) + (data.value.count2 * price2kg.value)
+    const price = (data.value.count * price3kg.value)
     return priceFomat(price)
 })
 
@@ -261,15 +294,13 @@ watch(isSameName, (newValue, oldValue) => {
 
 const showDialog = ref(false)
 
-onMounted(() => {
+onMounted(async () => {
     // 장마철 주문 중지
     // showDialog.value = true
     // 장마철 주문 중지
-
     
     const orderListJson = localStorage.getItem(STORAGE_KEY);
     orderList.value = orderListJson ? JSON.parse(orderListJson) : [];
-    console.log('orderList.value', orderList.value)
 })
 
 </script>
@@ -303,15 +334,15 @@ onMounted(() => {
                     향기 깊고, 당도 높고, 식감 좋은 복숭아만 엄선해 보내드립니다.
                 </p>
                 <!-- <p class="text-body-4 mb-7">
-                    3kg {{ priceFomat(price3kg) }}원 (상자 당 택배비 포함가격) <br/>
-                    2kg {{ priceFomat(price2kg) }}원 (상자 당 택배비 포함가격) <br/>
+                    3kg {{ price3kgView }}원 (상자 당 택배비 포함가격) <br/>
+                    2kg {{ price2kgView }}원 (상자 당 택배비 포함가격) <br/>
                     아래 '배송정보 입력하기'를 눌러 배송지를 보내주세요~!
                 </p> -->
                 <div class="mb-10 word-keep " style="color:black;">
                     <p>✔ 당일 수확, 산지 직송</p>
                     <p>✔ 당도 측정기로 확인한 12브릭스 이상</p>
                     <p>✔ 크기 선별: 중과 기준</p>
-                    <p>✔ 1박스(3kg) 44,000원 !!!!<br/>&nbsp;&nbsp;&nbsp;3kg 넘게 보내드려요~</p>
+                    <p>✔ 1박스(3kg) {{ price3kgView }}원 !!!!<br/>&nbsp;&nbsp;&nbsp;3kg 넘게 보내드려요~</p>
                     <p>✔ 선물용 & 가정용 모두 추천드립니다!</p>
                 </div>
                 <div class="mb-10 word-keep" style="color:black;">
