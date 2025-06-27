@@ -80,7 +80,7 @@ export default defineEventHandler(async (event) => {
                     })
                 })
                 console.log('repo', repo)
-                return { code: 200, message: `${body.name}님 ${body.count}박스 주문이 접수되었습니다.\n이용해주셔서 감사합니다!` }
+                return { code: 200, message: `${body.name}님 총 ${body.count + body.count2}박스 주문이 접수되었습니다.\n이용해주셔서 감사합니다!` }
         
             } catch (error) {
                 if (error instanceof Error) {
