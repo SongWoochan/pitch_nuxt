@@ -466,7 +466,7 @@ onMounted(async () => {
             <div class="px-5 pt-5 word-keep " style="color:gray;"
                 v-for="order  in orderList" :key="order.datetime">
                 <p>접수일시 : {{ order.datetime }}</p>
-                <p>받는사람 : {{ `${order.name}`}} | <v-if :is="order.count > 0">{{` 2kg  ${order.count2} 박스` }}</v-if> <v-if :is="order.count > 0">{{` 3kg  ${order.count} 박스` }}</v-if></p>
+                <p>받는사람 : {{ `${order.name}`}} <v-if :is="order.count > 0">| {{` 2kg x ${order.count2} 박스` }}</v-if> <v-if :is="order.count > 0">| {{` 3kg x ${order.count} 박스` }}</v-if></p>
                 <p>주소 : {{ `${order.address} ${order.addressDetail}` }}</p>
                 <v-divider class="mt-3"></v-divider>
             </div>
