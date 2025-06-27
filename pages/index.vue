@@ -31,7 +31,7 @@ const getPrice = async () => {
         const price = (result as any)?.result
         return {
             price3kg : price.price3kg,
-            price2kg : price.price3kg
+            price2kg : price.price2kg
         }
     } else {
         alert ((result as any)?.message ?? 'fail...')
@@ -254,8 +254,8 @@ const price2kgView = computed(() => {
 })
 
 const totalPrice = computed(() => {
-    // const price = (data.value.count * price3kg.value) + (data.value.count2 * price2kg.value)
-    const price = (data.value.count * price3kg.value)
+    const price = (data.value.count * price3kg.value) + (data.value.count2 * price2kg.value)
+    // const price = (data.value.count * price3kg.value)
     return priceFomat(price)
 })
 
@@ -329,25 +329,25 @@ onMounted(async () => {
                     직접 키운 복숭아, 정직하게 담았습니다.
                 </div>
                 <p class="text-body-4 mb-7 word-keep">
-                    저희 부모님께서 전남 화순에서 직접 농사 지은 복숭아입니다. <br/>
-                    자연에 가까운 방식으로 정성껏 키운 복숭아, <br/>
+                    자연에 가까운 방식으로 정성껏 키운 복숭아! <br/>
                     향기 깊고, 당도 높고, 식감 좋은 복숭아만 엄선해 보내드립니다.
                 </p>
-                <!-- <p class="text-body-4 mb-7">
-                    3kg {{ price3kgView }}원 (상자 당 택배비 포함가격) <br/>
-                    2kg {{ price2kgView }}원 (상자 당 택배비 포함가격) <br/>
-                    아래 '배송정보 입력하기'를 눌러 배송지를 보내주세요~!
-                </p> -->
                 <div class="mb-10 word-keep " style="color:black;">
-                    <p>✔ 당일 수확, 산지 직송</p>
-                    <p>✔ 당도 측정기로 확인한 평균 16브릭스</p>
-                    <p>✔ 화순 로컬푸드직매장 납품 복숭아</p>
-                    <p>✔ 크기 선별: 중과 기준 (17~23과)</p>
-                    <p>✔ 1박스(3kg) {{ price3kgView }}원 !!!!<br/>&nbsp;&nbsp;&nbsp;3kg 넘게 보내드려요~</p>
-                    <p>✔ 선물용 & 가정용 모두 추천드립니다!</p>
+                    <p><v-icon color="success">mdi-check-bold</v-icon><span style="color:orange;">당일 수확</span>, <span style="color:green;">산지 직송</span></p>
+                    <p><v-icon color="success">mdi-check-bold</v-icon> <span style="color:green;">단단</span>하고 <span style="color:orange;">아삭아삭</span>한 복숭아🍑</p>
+                    <p><v-icon color="success">mdi-check-bold</v-icon> 당도 측정기로 확인한 평균 <span style="color:orange;">16브릭스</span></p>
+                    <p><v-icon color="success">mdi-check-bold</v-icon> 화순 로컬푸드직매장 납품 복숭아</p>
+                    <p><span><v-icon color="success">mdi-check-bold</v-icon> 크기 선별</span> - 3kg : 중소과 기준 (17~23과)</p>
+                    <p><span style="visibility: hidden;"><v-icon color="success">mdi-check-bold</v-icon> 크기 선별</span> - 2kg : 중소과 기준 (12~16과)</p>
+                    <p><v-icon color="success">mdi-check-bold</v-icon> 선물용 & 가정용 모두 추천드립니다!</p>
+                    <p class="text-body-4 my-5">
+                        <span class="font-weight-medium">3kg {{ price3kgView }}원</span> (상자 당 택배비 포함가격) <br/>
+                        <span class="font-weight-medium">2kg {{ price2kgView }}원</span> (상자 당 택배비 포함가격) <br/>
+                        아래 "<span style="color:orange;">배송정보 입력하기</span>"를 눌러 배송지를 보내주세요~!
+                    </p>
                 </div>
                 <div class="mb-10 word-keep" style="color:black;">
-                    <p>🎁 3kg 단위 구매 가능</p>
+                    <p>📦 3kg, 2kg 단위 구매 가능</p>
                     <p>🚚 우체국 택배 선착순 발송<br/>(주문 물량 많을 시 다음날 발송)</p>
                 </div>
                 <div class="mb-10 word-keep" style="color:black;">
@@ -382,14 +382,14 @@ onMounted(async () => {
                                 <v-number-input variant="outlined" control-variant="split" v-model="data.count" :min="0" :max="20" density="comfortable" ></v-number-input>
                             </v-col>
                         </v-row>
-                        <!-- <v-row> 
+                        <v-row> 
                             <v-col class="pa-0 pb-5 d-flex align-center justify-center flex-wrap text-center " cols="4" sm="4">
                                 <v-field-label class="">수량(2kg 박스)</v-field-label>
                             </v-col>
                             <v-col class="pa-0" cols="8" sm="8">
                                 <v-number-input variant="outlined" control-variant="split" v-model="data.count2" :min="0" :max="20" density="comfortable" ></v-number-input>
                             </v-col>
-                        </v-row> -->
+                        </v-row>
                         <v-row> 
                             <v-col class="pa-0 pt-5 pb-5 d-flex align-end justify-end flex-wrap text-right " cols="12" sm="12">
                                 <v-field-label class="">총 {{ totalPrice }} 원</v-field-label>
@@ -451,10 +451,10 @@ onMounted(async () => {
             <v-card-item>
             <div>
                 <div class="text-h7 mb-1">
-                    농협
+                    카카오뱅크
                 </div>
                 <div class="text-h7 mb-1">
-                    <span class="mr-4">노영식</span>|<span class="ml-4" id="myAccount">601052-52-128758</span>
+                    <span class="mr-4">노수빈</span>|<span class="ml-4" id="myAccount">3333-28-4825104</span>
                     <v-icon class="ml-4" icon="mdi-content-copy" @click="copyToClipboard"></v-icon>
                 </div>
             </div>
@@ -465,7 +465,7 @@ onMounted(async () => {
             <div class="px-5 pt-5 word-keep " style="color:gray;"
                 v-for="order  in orderList" :key="order.datetime">
                 <p>접수일시 : {{ order.datetime }}</p>
-                <p>받는사람 : {{ `${order.name} | ${order.count} 박스`}}</p>
+                <p>받는사람 : {{ `${order.name}`}} | <v-if :is="order.count > 0">{{` 3kg  ${order.count} 박스` }}</v-if><v-if :is="order.count > 0">{{` 2kg  ${order.count2} 박스` }}</v-if></p>
                 <p>주소 : {{ `${order.address} ${order.addressDetail}` }}</p>
                 <v-divider class="mt-3"></v-divider>
             </div>
@@ -483,7 +483,7 @@ onMounted(async () => {
                             <v-col
                                 v-for="n in 11"
                                 :key="n"
-                                cols="12"
+                                cols="6"
                                 sm="4"
                             >
                             <v-img
@@ -578,4 +578,5 @@ onMounted(async () => {
 .word-keep {
     word-break: keep-all;
 }
+
 </style>
