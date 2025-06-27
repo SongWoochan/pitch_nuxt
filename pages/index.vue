@@ -337,18 +337,19 @@ onMounted(async () => {
                     <p><v-icon color="success">mdi-check-bold</v-icon> <span style="color:green;">단단</span>하고 <span style="color:orange;">아삭아삭</span>한 복숭아🍑</p>
                     <p><v-icon color="success">mdi-check-bold</v-icon> 당도 측정기로 확인한 평균 <span style="color:orange;">16브릭스</span></p>
                     <p><v-icon color="success">mdi-check-bold</v-icon> 화순 로컬푸드직매장 납품 복숭아</p>
-                    <p><span><v-icon color="success">mdi-check-bold</v-icon> 크기 선별</span> - 3kg : 중소과 기준 (17~23과)</p>
-                    <p><span style="visibility: hidden;"><v-icon color="success">mdi-check-bold</v-icon> 크기 선별</span> - 2kg : 중소과 기준 (12~16과)</p>
+                    <p><span><v-icon color="success">mdi-check-bold</v-icon> 크기 선별</span> - 2kg : 중소과 기준 (12~16과)</p>
+                    <p><span style="visibility: hidden;"><v-icon color="success">mdi-check-bold</v-icon> 크기 선별</span> - 3kg : 중소과 기준 (17~23과)</p>
                     <p><v-icon color="success">mdi-check-bold</v-icon> 선물용 & 가정용 모두 추천드립니다!</p>
                     <p class="text-body-4 my-5">
-                        <span class="font-weight-medium">3kg {{ price3kgView }}원</span> (상자 당 택배비 포함가격) <br/>
                         <span class="font-weight-medium">2kg {{ price2kgView }}원</span> (상자 당 택배비 포함가격) <br/>
-                        아래 "<span style="color:orange;">배송정보 입력하기</span>"를 눌러 배송지를 보내주세요~!
+                        <span class="font-weight-medium">3kg {{ price3kgView }}원</span> (상자 당 택배비 포함가격) <br/>
+                        아래 "<span style="color:orange;">배송정보 입력하기</span>"를 눌러 배송지를 보내주세요 ☺️
                     </p>
                 </div>
                 <div class="mb-10 word-keep" style="color:black;">
-                    <p>📦 3kg, 2kg 단위 구매 가능</p>
+                    <p>📦 2kg, 3kg 단위 구매 가능</p>
                     <p>🚚 우체국 택배 선착순 발송<br/>(주문 물량 많을 시 다음날 발송)</p>
+                    <p>📢 2kg, 3kg 박스 디자인이 다르니 참고 바랍니다🙏</p>
                 </div>
                 <div class="mb-10 word-keep" style="color:black;">
                     <p>
@@ -376,18 +377,18 @@ onMounted(async () => {
                         </v-row>
                         <v-row> 
                             <v-col class="pa-0 pb-5 d-flex align-center justify-center flex-wrap text-center " cols="4" sm="4">
-                                <v-field-label class="">수량(3kg 박스)</v-field-label>
-                            </v-col>
-                            <v-col class="pa-0" cols="8" sm="8">
-                                <v-number-input variant="outlined" control-variant="split" v-model="data.count" :min="0" :max="20" density="comfortable" ></v-number-input>
-                            </v-col>
-                        </v-row>
-                        <v-row> 
-                            <v-col class="pa-0 pb-5 d-flex align-center justify-center flex-wrap text-center " cols="4" sm="4">
                                 <v-field-label class="">수량(2kg 박스)</v-field-label>
                             </v-col>
                             <v-col class="pa-0" cols="8" sm="8">
                                 <v-number-input variant="outlined" control-variant="split" v-model="data.count2" :min="0" :max="20" density="comfortable" ></v-number-input>
+                            </v-col>
+                        </v-row>
+                        <v-row> 
+                            <v-col class="pa-0 pb-5 d-flex align-center justify-center flex-wrap text-center " cols="4" sm="4">
+                                <v-field-label class="">수량(3kg 박스)</v-field-label>
+                            </v-col>
+                            <v-col class="pa-0" cols="8" sm="8">
+                                <v-number-input variant="outlined" control-variant="split" v-model="data.count" :min="0" :max="20" density="comfortable" ></v-number-input>
                             </v-col>
                         </v-row>
                         <v-row> 
@@ -465,7 +466,7 @@ onMounted(async () => {
             <div class="px-5 pt-5 word-keep " style="color:gray;"
                 v-for="order  in orderList" :key="order.datetime">
                 <p>접수일시 : {{ order.datetime }}</p>
-                <p>받는사람 : {{ `${order.name}`}} | <v-if :is="order.count > 0">{{` 3kg  ${order.count} 박스` }}</v-if><v-if :is="order.count > 0">{{` 2kg  ${order.count2} 박스` }}</v-if></p>
+                <p>받는사람 : {{ `${order.name}`}} | <v-if :is="order.count > 0">{{` 2kg  ${order.count2} 박스` }}</v-if> <v-if :is="order.count > 0">{{` 3kg  ${order.count} 박스` }}</v-if></p>
                 <p>주소 : {{ `${order.address} ${order.addressDetail}` }}</p>
                 <v-divider class="mt-3"></v-divider>
             </div>
