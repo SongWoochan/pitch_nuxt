@@ -525,7 +525,7 @@ onMounted(async () => {
         max-width="400"
         prepend-icon="mdi-alert-circle-outline"
         title="공지사항"
-        text="복숭아는 현재 숙성 중으로 **7월 2일(수)**에 배송됩니다. 더 맛있게 익은 상태로 보내드리기 위함이니 양해 부탁드립니다."
+        text="복숭아는 현재 숙성 중으로 **7월 2일(수)**부터 배송됩니다. 더 맛있게 익은 상태로 보내드리기 위함이니 양해 부탁드립니다."
       >
         <template v-slot:actions>
           <v-btn
