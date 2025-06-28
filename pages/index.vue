@@ -296,7 +296,7 @@ const showDialog = ref(false)
 
 onMounted(async () => {
     // 장마철 주문 중지
-    // showDialog.value = true
+    showDialog.value = true
     // 장마철 주문 중지
     
     const orderListJson = localStorage.getItem(STORAGE_KEY);
@@ -525,7 +525,7 @@ onMounted(async () => {
         max-width="400"
         prepend-icon="mdi-alert-circle-outline"
         title="공지사항"
-        text="죄송합니다. 물량이 소진되어 장마가 지나가면 재개 할 예정입니다. 감사합니다."
+        text="복숭아는 현재 숙성 중으로 **7월 2일(수)**에 배송됩니다. 더 맛있게 익은 상태로 보내드리기 위함이니 양해 부탁드립니다."
       >
         <template v-slot:actions>
           <v-btn
